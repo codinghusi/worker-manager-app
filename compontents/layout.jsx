@@ -1,32 +1,18 @@
-import { AppBar, Toolbar, Typography, makeStyles } from '@material-ui/core';
-import User from './user';
-import Sidebar from './sidebar';
+import Appbar from './layout/appbar';
+import Head from 'next/head';
 
 const currentPage = {
     name: "Dashboard"
 };
 
-const useStyles = makeStyles({
-    title: {
-        flexGrow: 1
-    }
-});
-
 export default function Layout({ children }) {
-    const classes = useStyles();
-
     return (
         <>
-            <AppBar position="fixed">
-                <Toolbar>
-                    <Typography className={classes.title} mx="auto">
-                        { currentPage.name }
-                    </Typography>
-                    <User />
-                </Toolbar>
-            </AppBar>
-
-            <Sidebar />
+            <Head>
+                <title>{ currentPage.name } - Employee Management</title>
+            </Head>
+            
+            <Appbar />
 
             {children}
         </>
