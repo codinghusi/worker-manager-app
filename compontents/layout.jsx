@@ -1,5 +1,7 @@
 import Appbar from './layout/appbar';
 import Head from 'next/head';
+import { Grid } from 'react-bootstrap';
+import Center from './../helper/center';
 
 const currentPage = {
     name: "Dashboard"
@@ -14,7 +16,10 @@ export default function Layout({ children }) {
             
             <Appbar />
 
-            {children}
+            <Center>
+                {children}
+            </Center>
+
         </>
     );
 }

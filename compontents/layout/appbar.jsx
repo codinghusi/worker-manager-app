@@ -13,7 +13,8 @@ export default function Appbar() {
                 
                 <Navbar.Collapse id="navbar-navs" >
                     <Nav.Link> Dashboard </Nav.Link>
-                    <Nav.Link> Mitarbeiter </Nav.Link>
+                    <Nav.Link href="/workers"> Mitarbeiter </Nav.Link>
+                    <Nav.Link> Arbeitsprozesse </Nav.Link>
                 </Navbar.Collapse>
             </Nav>
 
