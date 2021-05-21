@@ -1,7 +1,7 @@
-
+import { Form, Button } from 'react-bootstrap';
 
 export default function WorkerForm({ onSubmit, data, buttonLabel }) {
-    const onSubmit = (e) => {
+    const handleSubmit = (e) => {
         // gathering up data
         e.preventDefault();
         const form = e.target;
@@ -13,7 +13,7 @@ export default function WorkerForm({ onSubmit, data, buttonLabel }) {
     };
 
     return (
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={handleSubmit}>
             <Form.Group controlId="name">
                 <Form.Label>Name des Mitarbeiters</Form.Label>
                 <Form.Control type="text" placeholder="Name eingeben" name="name" value={data.name} />

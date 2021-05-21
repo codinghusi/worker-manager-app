@@ -25,24 +25,6 @@ async function queryWorkers(query) {
 
 export default function WorkersPage() {
     const { loading, run, data } = useRequest(queryWorkers);
-    const [ workerModalOpened, openWorkerModal, closeWorkerModal ] = useModal();
-    const confirm = useConfirm();
-
-    useEffect(() => {
-        console.log("new status", confirm.status);
-        if (confirm.status === 'confirmed') {
-            closeWorkerModal();
-        }
-    }, [confirm.status]);
-
-    const onSave = useCallback((data) => {
-        closeWorkerModal();
-        console.log("saving", data);
-    });
-
-    const onCancel = useCallback(async () => {
-        confirm.open();
-    });
 
     return (
         <>
@@ -63,18 +45,12 @@ export default function WorkersPage() {
 
             <Divider> oder </Divider>
 
-            <Button variant="secondary" onClick={openWorkerModal}>
+            <Button variant="secondary" href="/worker/new">
                 <IconWithText>
                     Mitarbeiter hinzufügen
                     <BiPlus />
                 </IconWithText>
             </Button>
-
-            <EditWorkerModal onSave={onSave} onCancel={onCancel} show={workerModalOpened} />
-
-            <ConfirmModal handler={confirm} title="Änderungen verwerfen?">
-                Möchten Sie wirklich die letzten Änderungen verwerfen?
-            </ConfirmModal>
         </>
     )
 }
