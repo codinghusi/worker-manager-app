@@ -1,6 +1,6 @@
 
 
-query Worker($id: ID!) {
+query GetWorker($id: ID!) {
     getWorker(id: $id) {
         id,
         name,
@@ -8,7 +8,20 @@ query Worker($id: ID!) {
         segment,
         workArea
     }
-
-
 }
 
+mutation UpdateWorker($id: ID!, $data: WorkerPatch!) {
+    updateWorker(input: { filter: { id: [$id] }, set: $data }) {
+        worker {
+            id
+        }
+    }
+}
+
+mutation AddWorker($data: AddWorkerInput!) {
+    addWorker(input: [$data]) {
+        worker {
+            id
+        }
+    }
+}

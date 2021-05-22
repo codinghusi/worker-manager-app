@@ -594,12 +594,12 @@ export type WorkerRef = {
   process?: Maybe<WorkProcessRef>;
 };
 
-export type WorkerQueryVariables = Exact<{
+export type GetWorkerQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type WorkerQuery = (
+export type GetWorkerQuery = (
   { __typename?: 'Query' }
   & { getWorker?: Maybe<(
     { __typename?: 'Worker' }
@@ -607,9 +607,42 @@ export type WorkerQuery = (
   )> }
 );
 
+export type UpdateWorkerMutationVariables = Exact<{
+  id: Scalars['ID'];
+  data: WorkerPatch;
+}>;
 
-export const WorkerDocument = gql`
-    query Worker($id: ID!) {
+
+export type UpdateWorkerMutation = (
+  { __typename?: 'Mutation' }
+  & { updateWorker?: Maybe<(
+    { __typename?: 'UpdateWorkerPayload' }
+    & { worker?: Maybe<Array<Maybe<(
+      { __typename?: 'Worker' }
+      & Pick<Worker, 'id'>
+    )>>> }
+  )> }
+);
+
+export type AddWorkerMutationVariables = Exact<{
+  data: AddWorkerInput;
+}>;
+
+
+export type AddWorkerMutation = (
+  { __typename?: 'Mutation' }
+  & { addWorker?: Maybe<(
+    { __typename?: 'AddWorkerPayload' }
+    & { worker?: Maybe<Array<Maybe<(
+      { __typename?: 'Worker' }
+      & Pick<Worker, 'id'>
+    )>>> }
+  )> }
+);
+
+
+export const GetWorkerDocument = gql`
+    query GetWorker($id: ID!) {
   getWorker(id: $id) {
     id
     name
@@ -621,29 +654,100 @@ export const WorkerDocument = gql`
     `;
 
 /**
- * __useWorkerQuery__
+ * __useGetWorkerQuery__
  *
- * To run a query within a React component, call `useWorkerQuery` and pass it any options that fit your needs.
- * When your component renders, `useWorkerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetWorkerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWorkerQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useWorkerQuery({
+ * const { data, loading, error } = useGetWorkerQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useWorkerQuery(baseOptions: Apollo.QueryHookOptions<WorkerQuery, WorkerQueryVariables>) {
+export function useGetWorkerQuery(baseOptions: Apollo.QueryHookOptions<GetWorkerQuery, GetWorkerQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<WorkerQuery, WorkerQueryVariables>(WorkerDocument, options);
+        return Apollo.useQuery<GetWorkerQuery, GetWorkerQueryVariables>(GetWorkerDocument, options);
       }
-export function useWorkerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WorkerQuery, WorkerQueryVariables>) {
+export function useGetWorkerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWorkerQuery, GetWorkerQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<WorkerQuery, WorkerQueryVariables>(WorkerDocument, options);
+          return Apollo.useLazyQuery<GetWorkerQuery, GetWorkerQueryVariables>(GetWorkerDocument, options);
         }
-export type WorkerQueryHookResult = ReturnType<typeof useWorkerQuery>;
-export type WorkerLazyQueryHookResult = ReturnType<typeof useWorkerLazyQuery>;
-export type WorkerQueryResult = Apollo.QueryResult<WorkerQuery, WorkerQueryVariables>;
+export type GetWorkerQueryHookResult = ReturnType<typeof useGetWorkerQuery>;
+export type GetWorkerLazyQueryHookResult = ReturnType<typeof useGetWorkerLazyQuery>;
+export type GetWorkerQueryResult = Apollo.QueryResult<GetWorkerQuery, GetWorkerQueryVariables>;
+export const UpdateWorkerDocument = gql`
+    mutation UpdateWorker($id: ID!, $data: WorkerPatch!) {
+  updateWorker(input: {filter: {id: [$id]}, set: $data}) {
+    worker {
+      id
+    }
+  }
+}
+    `;
+export type UpdateWorkerMutationFn = Apollo.MutationFunction<UpdateWorkerMutation, UpdateWorkerMutationVariables>;
+
+/**
+ * __useUpdateWorkerMutation__
+ *
+ * To run a mutation, you first call `useUpdateWorkerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWorkerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateWorkerMutation, { data, loading, error }] = useUpdateWorkerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateWorkerMutation(baseOptions?: Apollo.MutationHookOptions<UpdateWorkerMutation, UpdateWorkerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateWorkerMutation, UpdateWorkerMutationVariables>(UpdateWorkerDocument, options);
+      }
+export type UpdateWorkerMutationHookResult = ReturnType<typeof useUpdateWorkerMutation>;
+export type UpdateWorkerMutationResult = Apollo.MutationResult<UpdateWorkerMutation>;
+export type UpdateWorkerMutationOptions = Apollo.BaseMutationOptions<UpdateWorkerMutation, UpdateWorkerMutationVariables>;
+export const AddWorkerDocument = gql`
+    mutation AddWorker($data: AddWorkerInput!) {
+  addWorker(input: [$data]) {
+    worker {
+      id
+    }
+  }
+}
+    `;
+export type AddWorkerMutationFn = Apollo.MutationFunction<AddWorkerMutation, AddWorkerMutationVariables>;
+
+/**
+ * __useAddWorkerMutation__
+ *
+ * To run a mutation, you first call `useAddWorkerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddWorkerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addWorkerMutation, { data, loading, error }] = useAddWorkerMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useAddWorkerMutation(baseOptions?: Apollo.MutationHookOptions<AddWorkerMutation, AddWorkerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddWorkerMutation, AddWorkerMutationVariables>(AddWorkerDocument, options);
+      }
+export type AddWorkerMutationHookResult = ReturnType<typeof useAddWorkerMutation>;
+export type AddWorkerMutationResult = Apollo.MutationResult<AddWorkerMutation>;
+export type AddWorkerMutationOptions = Apollo.BaseMutationOptions<AddWorkerMutation, AddWorkerMutationVariables>;

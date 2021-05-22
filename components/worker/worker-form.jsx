@@ -1,10 +1,35 @@
-import { useContext } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
-import Loading from '../loading';
-import { useWorkerQuery } from './../../api/generated/graphql';
-import { WorkerContext } from './worker-provider';
+import { Form, Button } from 'react-bootstrap';
+import { useUpdateWorkerMutation, useAddWorkerMutation } from '../../api/generated/graphql';
+import { FetchWorker } from '../../helper/fetching'
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-export default function WorkerForm({ onSubmit, id }) {
+export function AddWorkerForm({ }) {
+    const router = useRouter();
+
+    const onSubmit = (data) => {
+        // const request = useAddWorkerMutation({ variables: { data }});
+        // useEffect(() => {
+        //     router.push(`/worker/view/${request.data.updateWorker.worker.id}`);
+        // }, [request.data])
+    }
+
+    return <WorkerForm onSubmit={onSubmit} data={{}} />;
+}
+
+export function EditWorkerForm({ workerId }) {
+    const onSubmit = (data) => {
+        // return useUpdateWorkerMutation({ variables: { id: workerId, data }});
+    }
+
+    return (
+        <FetchWorker workerId={workerId}>
+            {worker => <WorkerForm onSubmit={onSubmit} data={worker} />}
+        </FetchWorker>
+    );
+}
+
+export function WorkerForm({ onSubmit, data }) {
     const handleSubmit = (e) => {
         // gathering up data
         e.preventDefault();
@@ -15,8 +40,6 @@ export default function WorkerForm({ onSubmit, id }) {
         // sending data
         onSubmit(data);
     };
-
-    const data = useContext(WorkerContext);
 
     return (
         <Form onSubmit={handleSubmit}>

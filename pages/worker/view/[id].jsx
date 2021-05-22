@@ -1,12 +1,8 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Row, Col, Card, Badge, Button, Alert } from 'react-bootstrap';
+import { Row, Col, Card, Badge, Button } from 'react-bootstrap';
 import { BiBrain, BiWindowAlt } from 'react-icons/bi';
 import IconWithText from '../../../helper/icon-with-text';
-import Loading from '../../../components/loading';
-import { useWorkerQuery } from '../../../api/generated/graphql';
-import { WorkerContext, WorkerProvider } from '../../../components/worker/worker-provider';
-import { useContext } from 'react';
 
 function SmallInfo({ children, name }) {
     return (
@@ -23,9 +19,7 @@ function SmallInfo({ children, name }) {
 }
 
 
-function WorkerDetails() {
-    const data = useContext(WorkerContext);
-
+function WorkerDetails({ data }) {
     return (
         <Card>
             <Card.Header>
@@ -64,9 +58,7 @@ function WorkerDetails() {
     );
 }
 
-function WorkerSteps() {
-    const data = useContext(WorkerContext);
-
+function WorkerSteps({ data }) {
     return (
         <Card>
             <Card.Header>
@@ -87,27 +79,25 @@ export default function ViewWorkerPage() {
     const router = useRouter();
     const { id } = router.query;
 
-    const data = useContext(WorkerContext);
-
     const core = (data) => (
         <>
             <Head>
                 <title>Mitarbeiter</title>
             </Head>
 
-            <div>
+            <>
                 <h1>Mitarbeiter {data.name} </h1>
                 
-                <WorkerDetails />
-                <WorkerSteps />
+                <WorkerDetails data={data} />
+                <WorkerSteps data={data} />
                 
-            </div>
+            </>
         </>
     );
 
     return (
-        <WorkerProvider workerId={id}>
+        <FetchWorker workerId={id}>
             {core}
-        </WorkerProvider>
+        </FetchWorker>
     )
 }
