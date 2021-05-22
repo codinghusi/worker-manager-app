@@ -1,59 +1,30 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Row, Col, Card, Badge, Button } from 'react-bootstrap';
-import { BiBrain, BiWindowAlt } from 'react-icons/bi';
-import IconWithText from '../../../helper/icon-with-text';
-
-function SmallInfo({ children, name }) {
-    return (
-        <Col>
-            <Row>
-                <Badge variant="primary">{name}</Badge>
-            </Row>
-
-            <Row>
-                {children}
-            </Row>
-        </Col>
-    );
-}
-
+import { Card, Button, List, Header } from 'semantic-ui-react';
+import { FetchWorker } from './../../../helper/fetching';
 
 function WorkerDetails({ data }) {
     return (
-        <Card>
-            <Card.Header>
-                Details
-            </Card.Header>
-        
-            <Card.Body>
-                <Card.Text>
-                    <Row>
-                        <SmallInfo name="Segment">
-                            <IconWithText>
-                                <BiBrain />
-                                {data.segment}
-                            </IconWithText>
-                        </SmallInfo>
-                    
-                        <SmallInfo name="TL-Bereich">
-                            <IconWithText>
-                                <BiBrain />
-                                {data.tlSection}
-                            </IconWithText>
-                        </SmallInfo>
-                    
-                        <SmallInfo name="Arbeitsbereich">
-                            <IconWithText>
-                                <BiWindowAlt />
-                                {data.workArea}
-                            </IconWithText>
-                        </SmallInfo>
-                    </Row>
+        <Card>        
+            <Card.Content>
+                <Card.Header> Details </Card.Header>
+                
+                <Card.Meta>
+                    <span> {data.name} </span>
+                </Card.Meta>
 
-                    <Button variant="success" href={`/worker/edit/${data.id}`}>Bearbeiten</Button>
-                </Card.Text>
-            </Card.Body>
+                <Card.Description>
+                    <List>
+                        <List.Item> Segment: {data.segment} </List.Item>
+                        <List.Item> TL-Bereich: {data.tlSection} </List.Item>
+                        <List.Item> Arbeitsbereich: {data.workArea} </List.Item>
+                    </List>
+                </Card.Description>
+            </Card.Content>
+
+            <Card.Content extra>
+                <Button href={`/worker/edit/${data.id}`} primary>Bearbeiten</Button>
+            </Card.Content>
         </Card>
     );
 }
@@ -61,16 +32,21 @@ function WorkerDetails({ data }) {
 function WorkerSteps({ data }) {
     return (
         <Card>
-            <Card.Header>
-                Arbeitsschritte
-            </Card.Header>
-            <Card.Body>
-                <Card.Text>
-                    {data.name} hat noch keine Arbeitsschritte zugewiesen bekommen
-                </Card.Text>
+            <Card.Content>
+                <Card.Header>
+                    Arbeitsschritte
+                </Card.Header>
 
-                <Button variant="primary" href="">Arbeitsschritte zuweisen</Button>
-            </Card.Body>
+                <Card.Description>
+                    Es wurden noch keine Arbeitsschritte zugewiesen
+                </Card.Description>
+            </Card.Content>
+
+            <Card.Content extra>
+                <Button primary>
+                    Arbeitsschritte zuweisen
+                </Button>
+            </Card.Content>
         </Card>
     );
 }
@@ -86,11 +62,10 @@ export default function ViewWorkerPage() {
             </Head>
 
             <>
-                <h1>Mitarbeiter {data.name} </h1>
+                <Header as="h1">Mitarbeiter {data.name} </Header>
                 
                 <WorkerDetails data={data} />
                 <WorkerSteps data={data} />
-                
             </>
         </>
     );

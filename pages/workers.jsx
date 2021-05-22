@@ -1,21 +1,11 @@
 import Head from 'next/head';
-import Button from 'react-bootstrap/Button';
-import { BiPlus } from 'react-icons/bi';
-import AsyncTypeaheadLang from '../helper/async-typeahead-lang';
 import { useRequest } from 'ahooks'; 
-import Divider from '../helper/divider';
-import IconWithText from '../helper/icon-with-text';
-import { useModal } from '../helper/hooks';
-import ConfirmModal, { useConfirm } from './../components/modals/confirm';
-import EditWorkerModal from '../components/worker/edit-worker-modal';
-import { useCallback, useEffect } from 'react';
+import { Header, Dropdown, Divider, Button, Icon } from 'semantic-ui-react'
+import { useState } from 'react';
+import { useMapRequest } from '../helper/fetching';
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function viewWorker(event) {
-    console.log(event);
 }
 
 async function queryWorkers(query) {
@@ -24,7 +14,19 @@ async function queryWorkers(query) {
 }
 
 export default function WorkersPage() {
-    const { loading, run, data } = useRequest(queryWorkers);
+    const { loading, run, data } = useMapRequest(useRequest(queryWorkers), item => ({ key: item, text: item, value: item }));
+
+    const [ value, setValue ] = useState([]);
+    const [ searchQuery, setSearchQuery ] = useState([]);
+
+    const handleChange = (e, { value }) => {
+        // setValue(value);
+    }
+
+    const handleSearchChange = (e, { searchQuery }) => {
+        setSearchQuery(searchQuery);
+        run(searchQuery);
+    }
 
     return (
         <>
@@ -32,24 +34,26 @@ export default function WorkersPage() {
                 <title>Mitarbeiter</title>
             </Head>
         
-            <h1>Mitarbeiter</h1>
+            <Header as="h1">Mitarbeiter</Header>
 
-            <AsyncTypeaheadLang
-                id="worker-search"
-                translate={{typeToSearch: "Warte auf Eingabe", searching: "Suchen...", noMatchesFound: "Keine Mitarbeiter gefunden."}}
-                onChange={viewWorker}
-                onSearch={run}
-                isLoading={loading}
+
+            <Dropdown
+                fluid
+                selection
+                search={true}
                 options={data}
-                minLength={1} />
+                value={value}
+                placeholder="Mitarbeiter suchen"
+                onChange={handleChange}
+                onSearchChange={handleSearchChange}
+                loading={loading}
+                noResultsMessage="Keine Mitarbeiter gefunden" />
 
-            <Divider> oder </Divider>
+            <Divider horizontal> oder </Divider>
 
-            <Button variant="secondary" href="/worker/new">
-                <IconWithText>
-                    Mitarbeiter hinzufügen
-                    <BiPlus />
-                </IconWithText>
+            <Button href="/worker/new" secondary>
+                <Icon name="plus square" />
+                Mitarbeiter hinzufügen
             </Button>
         </>
     )

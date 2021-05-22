@@ -1,25 +1,19 @@
-import { Navbar, Nav } from 'react-bootstrap';
 import User from './user'
+import { Menu } from 'semantic-ui-react';
 
 export default function Appbar() {
     return (
-        <Navbar expand="lg">
-            <Nav className="mr-auto">
-                <Navbar.Brand>
-                    Yay
-                </Navbar.Brand>
-                
-                <Navbar.Toggle aria-controls="navbar-navs"></Navbar.Toggle>
-                
-                <Navbar.Collapse id="navbar-navs" >
-                    <Nav.Link> Dashboard </Nav.Link>
-                    <Nav.Link href="/workers"> Mitarbeiter </Nav.Link>
-                    <Nav.Link> Arbeitsprozesse </Nav.Link>
-                </Navbar.Collapse>
-            </Nav>
+        <Menu secondary>
+            <Menu.Item> Dashboard </Menu.Item>
+            <Menu.Item href="/workers"> Mitarbeiter </Menu.Item>
+            <Menu.Item> Arbeitsprozesse </Menu.Item>
 
-            <User />
+            <Menu.Menu position="right">
+                <Menu.Item>
+                    <User />
+                </Menu.Item>
+            </Menu.Menu>
             
-        </Navbar>
+        </Menu>
     );
 }

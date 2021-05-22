@@ -1,17 +1,21 @@
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'semantic-ui-react';
 import { useUpdateWorkerMutation, useAddWorkerMutation } from '../../api/generated/graphql';
 import { FetchWorker } from '../../helper/fetching'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 export function AddWorkerForm({ }) {
     const router = useRouter();
 
+    const [ addWorker, { data, error, loading }] = useAddWorkerMutation();
+
+    useEffect(() => {
+        router.push(`/worker/view/${request.data.updateWorker.worker.id}`);
+    }, [request.data])
+
     const onSubmit = (data) => {
-        // const request = useAddWorkerMutation({ variables: { data }});
-        // useEffect(() => {
-        //     router.push(`/worker/view/${request.data.updateWorker.worker.id}`);
-        // }, [request.data])
+        addWorker({ variables: { data } });
+        return loading;
     }
 
     return <WorkerForm onSubmit={onSubmit} data={{}} />;
@@ -30,6 +34,8 @@ export function EditWorkerForm({ workerId }) {
 }
 
 export function WorkerForm({ onSubmit, data }) {
+    const [ submitLoading, setSubmitLoading ] = useState(false);
+
     const handleSubmit = (e) => {
         // gathering up data
         e.preventDefault();
@@ -38,40 +44,51 @@ export function WorkerForm({ onSubmit, data }) {
         const data = Object.fromEntries(formData.entries());
 
         // sending data
-        onSubmit(data);
+        const loading = onSubmit(data);
+        setSubmitLoading(loading);
     };
 
     return (
         <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="name">
-                <Form.Label>Name des Mitarbeiters</Form.Label>
-                <Form.Control type="text" placeholder="Name eingeben" name="name" value={data.name} />
-            </Form.Group>
+            <Form.Field>
+                <label>Name des Mitarbeiters</label>
+                <input
+                    placeholder="Name eingeben"
+                    name="name"
+                    value={data.name}
+                />
+            </Form.Field>
 
-            <Form.Group controlId="segment">
-                <Form.Label>Segment</Form.Label>
-                <Form.Control type="text" placeholder="Segment eingeben" name="segment" value={data.segment} />
-            </Form.Group>
+            <Form.Field>
+                <label>Segment</label>
+                <input
+                    placeholder="Segment eingeben"
+                    name="segment"
+                    value={data.segment}
+                />
+            </Form.Field>
 
-            <Form.Group controlId="tlSection">
-                <Form.Label>TL - Bereich</Form.Label>
-                <Form.Control type="text" placeholder="TL-Bereich eingeben" name="tlSection" value={data.tlSection} />
-            </Form.Group>
+            <Form.Field>
+                <label>TL - Bereich</label>
+                <input
+                    placeholder="Bereich eingeben"
+                    name="tlSection"
+                    value={data.tlSection}
+                />
+            </Form.Field>
 
-            <Form.Group controlId="workArea">
-                <Form.Label>Arbeitsbereich</Form.Label>
-                <Form.Control type="text" placeholder="Arbeitsbereich eingeben" name="workArea" value={data.workArea} />
-            </Form.Group>
+            <Form.Field>
+                <label>Arbeitsbereich</label>
+                <input
+                    placeholder="Arbeitsbereich eingeben"
+                    name="workArea"
+                    value={data.workArea}
+                />
+            </Form.Field>
 
-            {data.id && (
-                <Button type="submit" variant="primary">
-                    Speichern
-                </Button>
-            ) || (
-                <Button type="submit" variant="primary">
-                    Erstellen
-                </Button>
-            )}
+            <Button type="submit" loading={submitLoading} primary>
+                {data.id ? "Speichern" : "Erstellen"}
+            </Button>
             
         </Form>
     );

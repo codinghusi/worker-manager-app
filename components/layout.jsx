@@ -1,7 +1,6 @@
 import Appbar from './layout/appbar';
 import Head from 'next/head';
-import { Grid } from 'react-bootstrap';
-import Center from './../helper/center';
+import { Grid } from 'semantic-ui-react';
 
 const currentPage = {
     name: "Dashboard"
@@ -16,9 +15,11 @@ export default function Layout({ children }) {
             
             <Appbar />
 
-            <Center>
-                {children}
-            </Center>
+            <Grid centered>
+                <div>
+                    {children}
+                </div>
+            </Grid>
 
         </>
     );

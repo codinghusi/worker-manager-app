@@ -1,6 +1,5 @@
 import '../styles/globals.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+import 'semantic-ui-css/semantic.min.css'
 import '@fontsource/roboto';
 import Layout from '../components/layout';
 import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';

@@ -1,4 +1,4 @@
-import { Spinner } from 'react-bootstrap';
+import { Loader } from 'semantic-ui-react';
 import { findByType } from './../helper/subcomponents';
 
 const Description = () => null;
@@ -13,12 +13,7 @@ export default function Loading({ request, field, children }) {
     return (
         <>
             {request.loading && (
-                <div>
-                    <Spinner animation="border" role="status">
-                        <span className="sr-only">Laden...</span>
-                    </Spinner>
-                    {description}
-                </div>
+                <Loader> {description} </Loader>
             )}
 
             {!request.loading && !request.error && request.data[field] && (

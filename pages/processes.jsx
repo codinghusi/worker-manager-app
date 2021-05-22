@@ -6,8 +6,6 @@ export default function ProcessesPage() {
             <Head>
                 <title>Arbeitsprozesse</title>
             </Head>
-        
-
         </>
     )
 }

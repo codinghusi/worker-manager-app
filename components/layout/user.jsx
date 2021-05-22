@@ -1,7 +1,4 @@
-import Dropdown from 'react-bootstrap/Dropdown';
-import Button from 'react-bootstrap/Button';
-import { BiUserCircle } from 'react-icons/bi';
-import IconWithText from '../../helper/icon-with-text';
+import { Button, Dropdown } from 'semantic-ui-react';
 
 export function getStaticProps() {
     return {
@@ -17,25 +14,20 @@ export default function User() {
     return (
         <>
             {!loggedIn && (
-                <Button>
-                    <IconWithText>
-                        <BiUserCircle />
-                        Anmelden
-                    </IconWithText>
-                </Button>
+                <Button> Anmelden </Button>
             ) || (
-                <Dropdown>
-                    <Dropdown.Toggle variant="primary">
-                        <IconWithText>
-                            <BiUserCircle />
-                            Dein Name
-                        </IconWithText>
-                    </Dropdown.Toggle>
-
+                <Dropdown
+                    text="Account"
+                    icon="user"
+                    floating
+                    labeled
+                    button
+                    className="icon"
+                >
                     <Dropdown.Menu>
-                        <Dropdown.Item>Profil</Dropdown.Item>
-                        <Dropdown.Item>Account</Dropdown.Item>
-                        <Dropdown.Item>Logout</Dropdown.Item>
+                        <Dropdown.Item text="Profil" />
+                        <Dropdown.Item text="Rechnungen" />
+                        <Dropdown.Item text="Abmelden" />
                     </Dropdown.Menu>
                 </Dropdown>
             )}

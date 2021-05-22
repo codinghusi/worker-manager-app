@@ -1,6 +1,8 @@
+import { useState } from 'react';
+import { Message } from 'semantic-ui-react';
 import { useGetWorkerQuery } from '../api/generated/graphql';
 import Loading from '../components/loading';
-import { Alert } from 'react-bootstrap';
+import { useEffect } from 'react';
 
 function FetchType({ request, field, loadingLabel, errorLabel, children }) {
     return (
@@ -14,7 +16,14 @@ function FetchType({ request, field, loadingLabel, errorLabel, children }) {
             </Loading.Success>
 
             <Loading.Error>
-                {error => <Alert variant="danger">{errorLabel}</Alert>}
+                {error => (
+                    <Message variant="danger">
+                        <Message.Header> Fehler </Message.Header>
+                        <p>
+                            {errorLabel}
+                        </p>
+                    </Message>
+                )}
             </Loading.Error>
         </Loading>
     );
@@ -29,4 +38,15 @@ export function FetchWorker({ workerId, children }) {
             {children}
         </FetchType>
     );
+}
+
+
+export function useMapRequest(request, predicate) {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        setData(request.data?.map(predicate));
+    }, [request.data]);
+
+    return { ...request, data };
 }
