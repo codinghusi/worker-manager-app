@@ -1,0 +1,14 @@
+
+
+query Worker($id: ID!) {
+    getWorker(id: $id) {
+        id,
+        name,
+        tlSection,
+        segment,
+        workArea
+    }
+
+
+}
+

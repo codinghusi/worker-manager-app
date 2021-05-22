@@ -1,6 +1,10 @@
-import { Form, Button } from 'react-bootstrap';
+import { useContext } from 'react';
+import { Form, Button, Alert } from 'react-bootstrap';
+import Loading from '../loading';
+import { useWorkerQuery } from './../../api/generated/graphql';
+import { WorkerContext } from './worker-provider';
 
-export default function WorkerForm({ onSubmit, data, buttonLabel }) {
+export default function WorkerForm({ onSubmit, id }) {
     const handleSubmit = (e) => {
         // gathering up data
         e.preventDefault();
@@ -11,6 +15,8 @@ export default function WorkerForm({ onSubmit, data, buttonLabel }) {
         // sending data
         onSubmit(data);
     };
+
+    const data = useContext(WorkerContext);
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -34,9 +40,16 @@ export default function WorkerForm({ onSubmit, data, buttonLabel }) {
                 <Form.Control type="text" placeholder="Arbeitsbereich eingeben" name="workArea" value={data.workArea} />
             </Form.Group>
 
-            <Button type="submit" variant="primary">
-                {buttonLabel}
-            </Button>
+            {data.id && (
+                <Button type="submit" variant="primary">
+                    Speichern
+                </Button>
+            ) || (
+                <Button type="submit" variant="primary">
+                    Erstellen
+                </Button>
+            )}
+            
         </Form>
     );
 }
