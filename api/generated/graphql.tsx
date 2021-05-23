@@ -37,6 +37,7 @@ export type Scalars = {
 
 
 
+
 export type AddWorkProcessInput = {
   name?: Maybe<Scalars['String']>;
   workers?: Maybe<Array<Maybe<WorkerRef>>>;
@@ -105,6 +106,7 @@ export type CustomHttp = {
 
 export type DateTimeFilter = {
   eq?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Maybe<Scalars['DateTime']>>>;
   le?: Maybe<Scalars['DateTime']>;
   lt?: Maybe<Scalars['DateTime']>;
   ge?: Maybe<Scalars['DateTime']>;
@@ -167,6 +169,7 @@ export enum DgraphIndex {
 
 export type FloatFilter = {
   eq?: Maybe<Scalars['Float']>;
+  in?: Maybe<Array<Maybe<Scalars['Float']>>>;
   le?: Maybe<Scalars['Float']>;
   lt?: Maybe<Scalars['Float']>;
   ge?: Maybe<Scalars['Float']>;
@@ -203,6 +206,7 @@ export enum HttpMethod {
 
 export type Int64Filter = {
   eq?: Maybe<Scalars['Int64']>;
+  in?: Maybe<Array<Maybe<Scalars['Int64']>>>;
   le?: Maybe<Scalars['Int64']>;
   lt?: Maybe<Scalars['Int64']>;
   ge?: Maybe<Scalars['Int64']>;
@@ -217,6 +221,7 @@ export type Int64Range = {
 
 export type IntFilter = {
   eq?: Maybe<Scalars['Int']>;
+  in?: Maybe<Array<Maybe<Scalars['Int']>>>;
   le?: Maybe<Scalars['Int']>;
   lt?: Maybe<Scalars['Int']>;
   ge?: Maybe<Scalars['Int']>;
@@ -261,6 +266,7 @@ export type Mutation = {
 
 export type MutationAddWorkerArgs = {
   input: Array<AddWorkerInput>;
+  upsert?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -346,7 +352,8 @@ export type Query = {
 
 
 export type QueryGetWorkerArgs = {
-  id: Scalars['ID'];
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 
@@ -488,7 +495,7 @@ export type WorkProcessAggregateResult = {
 
 export type WorkProcessFilter = {
   id?: Maybe<Array<Scalars['ID']>>;
-  has?: Maybe<WorkProcessHasFilter>;
+  has?: Maybe<Array<Maybe<WorkProcessHasFilter>>>;
   and?: Maybe<Array<Maybe<WorkProcessFilter>>>;
   or?: Maybe<Array<Maybe<WorkProcessFilter>>>;
   not?: Maybe<WorkProcessFilter>;
@@ -550,7 +557,8 @@ export type WorkerAggregateResult = {
 
 export type WorkerFilter = {
   id?: Maybe<Array<Scalars['ID']>>;
-  has?: Maybe<WorkerHasFilter>;
+  name?: Maybe<StringHashFilter>;
+  has?: Maybe<Array<Maybe<WorkerHasFilter>>>;
   and?: Maybe<Array<Maybe<WorkerFilter>>>;
   or?: Maybe<Array<Maybe<WorkerFilter>>>;
   not?: Maybe<WorkerFilter>;
@@ -578,7 +586,6 @@ export enum WorkerOrderable {
 }
 
 export type WorkerPatch = {
-  name?: Maybe<Scalars['String']>;
   tlSection?: Maybe<Scalars['String']>;
   segment?: Maybe<Scalars['String']>;
   workArea?: Maybe<Scalars['String']>;
@@ -605,6 +612,17 @@ export type GetWorkerQuery = (
     { __typename?: 'Worker' }
     & Pick<Worker, 'id' | 'name' | 'tlSection' | 'segment' | 'workArea'>
   )> }
+);
+
+export type AllWorkersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllWorkersQuery = (
+  { __typename?: 'Query' }
+  & { queryWorker?: Maybe<Array<Maybe<(
+    { __typename?: 'Worker' }
+    & Pick<Worker, 'id' | 'name'>
+  )>>> }
 );
 
 export type UpdateWorkerMutationVariables = Exact<{
@@ -680,6 +698,41 @@ export function useGetWorkerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetWorkerQueryHookResult = ReturnType<typeof useGetWorkerQuery>;
 export type GetWorkerLazyQueryHookResult = ReturnType<typeof useGetWorkerLazyQuery>;
 export type GetWorkerQueryResult = Apollo.QueryResult<GetWorkerQuery, GetWorkerQueryVariables>;
+export const AllWorkersDocument = gql`
+    query AllWorkers {
+  queryWorker {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useAllWorkersQuery__
+ *
+ * To run a query within a React component, call `useAllWorkersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllWorkersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllWorkersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllWorkersQuery(baseOptions?: Apollo.QueryHookOptions<AllWorkersQuery, AllWorkersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllWorkersQuery, AllWorkersQueryVariables>(AllWorkersDocument, options);
+      }
+export function useAllWorkersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllWorkersQuery, AllWorkersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllWorkersQuery, AllWorkersQueryVariables>(AllWorkersDocument, options);
+        }
+export type AllWorkersQueryHookResult = ReturnType<typeof useAllWorkersQuery>;
+export type AllWorkersLazyQueryHookResult = ReturnType<typeof useAllWorkersLazyQuery>;
+export type AllWorkersQueryResult = Apollo.QueryResult<AllWorkersQuery, AllWorkersQueryVariables>;
 export const UpdateWorkerDocument = gql`
     mutation UpdateWorker($id: ID!, $data: WorkerPatch!) {
   updateWorker(input: {filter: {id: [$id]}, set: $data}) {

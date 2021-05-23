@@ -16,11 +16,11 @@ export default function Loading({ request, field, children }) {
                 <Loader> {description} </Loader>
             )}
 
-            {!request.loading && !request.error && request.data[field] && (
+            {!request.loading && !request.error && request.data?.[field] && (
                 success(request.data[field])
             )}
 
-            {!request.loading && (request.error || !request.data[field]) &&  (
+            {!request.loading && (request.error || !request.data?.[field]) &&  (
                 error(request.error)
             )}
         </>

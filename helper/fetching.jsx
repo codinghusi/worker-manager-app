@@ -31,7 +31,15 @@ function FetchType({ request, field, loadingLabel, errorLabel, children }) {
 
 
 export function FetchWorker({ workerId, children }) {
-    const request = useGetWorkerQuery({ variables: { id: workerId } });
+    const apiRequest = useGetWorkerQuery({ variables: { id: workerId } });
+    // const request = useMiddlewareRequest(apiRequest, data => ({
+    //     id: data.id,
+    //     name: data.name,
+    //     tlSection: data.tlSection.value,
+    //     segment: data.segment.value,
+    //     workArea: data.workArea.value
+    // }));
+    const request = apiRequest;
 
     return (
         <FetchType request={request} field="getWorker" loadingLabel="Lade Mitarbeiter" errorLabel="Mitarbeiter konnte nicht gefunden werden!">
@@ -40,13 +48,19 @@ export function FetchWorker({ workerId, children }) {
     );
 }
 
-
-export function useMapRequest(request, predicate) {
+export function useMiddlewareRequest(request, predicate) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        setData(request.data?.map(predicate));
+        if (request.data) {
+            setData(predicate(request.data));
+        }
     }, [request.data]);
 
     return { ...request, data };
+}
+
+
+export function useMapRequest(request, fieldname, predicate) {
+    return useMiddlewareRequest(request, data => data[fieldname].map(predicate));
 }

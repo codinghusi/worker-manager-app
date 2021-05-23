@@ -1,5 +1,5 @@
 import { Form, Button } from 'semantic-ui-react';
-import { useUpdateWorkerMutation, useAddWorkerMutation } from '../../api/generated/graphql';
+import { useUpdateWorkerMutation, useAddWorkerMutation, UpdateWorkerDocument } from '../../api/generated/graphql';
 import { FetchWorker } from '../../helper/fetching'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -10,8 +10,17 @@ export function AddWorkerForm({ }) {
     const [ addWorker, { data, error, loading }] = useAddWorkerMutation();
 
     useEffect(() => {
-        router.push(`/worker/view/${request.data.updateWorker.worker.id}`);
-    }, [request.data])
+        const worker = data?.addWorker?.worker;
+        if (worker && worker.length) {
+            router.push(`/worker/view/${worker[0].id}`);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (error) {
+            console.log("error while adding worker", error);
+        }
+    }, [error]);
 
     const onSubmit = (data) => {
         addWorker({ variables: { data } });
@@ -22,9 +31,27 @@ export function AddWorkerForm({ }) {
 }
 
 export function EditWorkerForm({ workerId }) {
+    const router = useRouter();
+    const [ updateWorker, { data, error, loading }] = useUpdateWorkerMutation();
+
     const onSubmit = (data) => {
-        // return useUpdateWorkerMutation({ variables: { id: workerId, data }});
+        delete data.name; // is readonly, cant be updated
+
+        updateWorker({ variables: { id: workerId, data } });
+        return loading;
     }
+
+    useEffect(() => {
+        if (data?.updateWorker?.worker?.length) {
+            router.push(`/worker/view/${workerId}`);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (error) {
+            console.log("error while updating worker", error);
+        }
+    }, [error]);
 
     return (
         <FetchWorker workerId={workerId}>
@@ -41,7 +68,16 @@ export function WorkerForm({ onSubmit, data }) {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+        const rawData = Object.fromEntries(formData.entries());
+        // const data = {
+        //     name: rawData.name,
+        //     tlSection: { value: rawData.tlSection },
+        //     segment: { value: rawData.segment },
+        //     workArea: { value: rawData.workArea },
+        // }
+        const data = rawData;
+
+        console.log("data:", data);
 
         // sending data
         const loading = onSubmit(data);
@@ -55,7 +91,9 @@ export function WorkerForm({ onSubmit, data }) {
                 <input
                     placeholder="Name eingeben"
                     name="name"
-                    value={data.name}
+                    defaultValue={data.name}
+                    readOnly={!!data.id}
+                    disabled={!!data.id}
                 />
             </Form.Field>
 
@@ -64,7 +102,7 @@ export function WorkerForm({ onSubmit, data }) {
                 <input
                     placeholder="Segment eingeben"
                     name="segment"
-                    value={data.segment}
+                    defaultValue={data.segment}
                 />
             </Form.Field>
 
@@ -73,7 +111,7 @@ export function WorkerForm({ onSubmit, data }) {
                 <input
                     placeholder="Bereich eingeben"
                     name="tlSection"
-                    value={data.tlSection}
+                    defaultValue={data.tlSection}
                 />
             </Form.Field>
 
@@ -82,7 +120,7 @@ export function WorkerForm({ onSubmit, data }) {
                 <input
                     placeholder="Arbeitsbereich eingeben"
                     name="workArea"
-                    value={data.workArea}
+                    defaultValue={data.workArea}
                 />
             </Form.Field>
 

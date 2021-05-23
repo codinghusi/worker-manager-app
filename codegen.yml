@@ -1,5 +1,6 @@
 overwrite: true
-schema: "https://empty-moon.eu-west-1.aws.cloud.dgraph.io/graphql"
+# schema: "https://empty-moon.eu-west-1.aws.cloud.dgraph.io/graphql"
+schema: "https://gerrit.lamann.eu/dgraph/graphql"
 documents: "api/**/*.graphql"
 generates:
   api/generated/graphql.tsx:

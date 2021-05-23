@@ -2,11 +2,18 @@
 
 query GetWorker($id: ID!) {
     getWorker(id: $id) {
-        id,
-        name,
-        tlSection,
-        segment,
+        id
+        name
+        tlSection
+        segment
         workArea
+    }
+}
+
+query AllWorkers {
+    queryWorker {
+        id
+      	name
     }
 }
 
