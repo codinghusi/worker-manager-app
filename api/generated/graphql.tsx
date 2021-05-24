@@ -57,30 +57,11 @@ export type AddWorkProcessPayloadWorkProcessArgs = {
   offset?: Maybe<Scalars['Int']>;
 };
 
-export type AddWorkerFieldInput = {
-  value: Scalars['String'];
-  fieldType: WorkerFieldType;
-};
-
-export type AddWorkerFieldPayload = {
-  __typename?: 'AddWorkerFieldPayload';
-  workerField?: Maybe<Array<Maybe<WorkerField>>>;
-  numUids?: Maybe<Scalars['Int']>;
-};
-
-
-export type AddWorkerFieldPayloadWorkerFieldArgs = {
-  filter?: Maybe<WorkerFieldFilter>;
-  order?: Maybe<WorkerFieldOrder>;
-  first?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-};
-
 export type AddWorkerInput = {
   name: Scalars['String'];
-  tlSection: WorkerFieldRef;
-  segment: WorkerFieldRef;
-  workArea: WorkerFieldRef;
+  tlSection: Worker_TlSectionRef;
+  segment: Worker_SegmentRef;
+  workArea: Worker_WorkAreaRef;
   process?: Maybe<WorkProcessRef>;
 };
 
@@ -94,6 +75,60 @@ export type AddWorkerPayload = {
 export type AddWorkerPayloadWorkerArgs = {
   filter?: Maybe<WorkerFilter>;
   order?: Maybe<WorkerOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+export type AddWorker_SegmentInput = {
+  value: Scalars['String'];
+};
+
+export type AddWorker_SegmentPayload = {
+  __typename?: 'AddWorker_segmentPayload';
+  worker_segment?: Maybe<Array<Maybe<Worker_Segment>>>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type AddWorker_SegmentPayloadWorker_SegmentArgs = {
+  filter?: Maybe<Worker_SegmentFilter>;
+  order?: Maybe<Worker_SegmentOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+export type AddWorker_TlSectionInput = {
+  value: Scalars['String'];
+};
+
+export type AddWorker_TlSectionPayload = {
+  __typename?: 'AddWorker_tlSectionPayload';
+  worker_tlSection?: Maybe<Array<Maybe<Worker_TlSection>>>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type AddWorker_TlSectionPayloadWorker_TlSectionArgs = {
+  filter?: Maybe<Worker_TlSectionFilter>;
+  order?: Maybe<Worker_TlSectionOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+export type AddWorker_WorkAreaInput = {
+  value: Scalars['String'];
+};
+
+export type AddWorker_WorkAreaPayload = {
+  __typename?: 'AddWorker_workAreaPayload';
+  worker_workArea?: Maybe<Array<Maybe<Worker_WorkArea>>>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type AddWorker_WorkAreaPayloadWorker_WorkAreaArgs = {
+  filter?: Maybe<Worker_WorkAreaFilter>;
+  order?: Maybe<Worker_WorkAreaOrder>;
   first?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
 };
@@ -153,21 +188,6 @@ export type DeleteWorkProcessPayloadWorkProcessArgs = {
   offset?: Maybe<Scalars['Int']>;
 };
 
-export type DeleteWorkerFieldPayload = {
-  __typename?: 'DeleteWorkerFieldPayload';
-  workerField?: Maybe<Array<Maybe<WorkerField>>>;
-  msg?: Maybe<Scalars['String']>;
-  numUids?: Maybe<Scalars['Int']>;
-};
-
-
-export type DeleteWorkerFieldPayloadWorkerFieldArgs = {
-  filter?: Maybe<WorkerFieldFilter>;
-  order?: Maybe<WorkerFieldOrder>;
-  first?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-};
-
 export type DeleteWorkerPayload = {
   __typename?: 'DeleteWorkerPayload';
   worker?: Maybe<Array<Maybe<Worker>>>;
@@ -179,6 +199,51 @@ export type DeleteWorkerPayload = {
 export type DeleteWorkerPayloadWorkerArgs = {
   filter?: Maybe<WorkerFilter>;
   order?: Maybe<WorkerOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+export type DeleteWorker_SegmentPayload = {
+  __typename?: 'DeleteWorker_segmentPayload';
+  worker_segment?: Maybe<Array<Maybe<Worker_Segment>>>;
+  msg?: Maybe<Scalars['String']>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type DeleteWorker_SegmentPayloadWorker_SegmentArgs = {
+  filter?: Maybe<Worker_SegmentFilter>;
+  order?: Maybe<Worker_SegmentOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+export type DeleteWorker_TlSectionPayload = {
+  __typename?: 'DeleteWorker_tlSectionPayload';
+  worker_tlSection?: Maybe<Array<Maybe<Worker_TlSection>>>;
+  msg?: Maybe<Scalars['String']>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type DeleteWorker_TlSectionPayloadWorker_TlSectionArgs = {
+  filter?: Maybe<Worker_TlSectionFilter>;
+  order?: Maybe<Worker_TlSectionOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+export type DeleteWorker_WorkAreaPayload = {
+  __typename?: 'DeleteWorker_workAreaPayload';
+  worker_workArea?: Maybe<Array<Maybe<Worker_WorkArea>>>;
+  msg?: Maybe<Scalars['String']>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type DeleteWorker_WorkAreaPayloadWorker_WorkAreaArgs = {
+  filter?: Maybe<Worker_WorkAreaFilter>;
+  order?: Maybe<Worker_WorkAreaOrder>;
   first?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
 };
@@ -292,9 +357,12 @@ export type Mutation = {
   addWorker?: Maybe<AddWorkerPayload>;
   updateWorker?: Maybe<UpdateWorkerPayload>;
   deleteWorker?: Maybe<DeleteWorkerPayload>;
-  addWorkerField?: Maybe<AddWorkerFieldPayload>;
-  updateWorkerField?: Maybe<UpdateWorkerFieldPayload>;
-  deleteWorkerField?: Maybe<DeleteWorkerFieldPayload>;
+  addWorker_tlSection?: Maybe<AddWorker_TlSectionPayload>;
+  deleteWorker_tlSection?: Maybe<DeleteWorker_TlSectionPayload>;
+  addWorker_segment?: Maybe<AddWorker_SegmentPayload>;
+  deleteWorker_segment?: Maybe<DeleteWorker_SegmentPayload>;
+  addWorker_workArea?: Maybe<AddWorker_WorkAreaPayload>;
+  deleteWorker_workArea?: Maybe<DeleteWorker_WorkAreaPayload>;
   addWorkProcess?: Maybe<AddWorkProcessPayload>;
   updateWorkProcess?: Maybe<UpdateWorkProcessPayload>;
   deleteWorkProcess?: Maybe<DeleteWorkProcessPayload>;
@@ -317,19 +385,36 @@ export type MutationDeleteWorkerArgs = {
 };
 
 
-export type MutationAddWorkerFieldArgs = {
-  input: Array<AddWorkerFieldInput>;
+export type MutationAddWorker_TlSectionArgs = {
+  input: Array<AddWorker_TlSectionInput>;
   upsert?: Maybe<Scalars['Boolean']>;
 };
 
 
-export type MutationUpdateWorkerFieldArgs = {
-  input: UpdateWorkerFieldInput;
+export type MutationDeleteWorker_TlSectionArgs = {
+  filter: Worker_TlSectionFilter;
 };
 
 
-export type MutationDeleteWorkerFieldArgs = {
-  filter: WorkerFieldFilter;
+export type MutationAddWorker_SegmentArgs = {
+  input: Array<AddWorker_SegmentInput>;
+  upsert?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationDeleteWorker_SegmentArgs = {
+  filter: Worker_SegmentFilter;
+};
+
+
+export type MutationAddWorker_WorkAreaArgs = {
+  input: Array<AddWorker_WorkAreaInput>;
+  upsert?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationDeleteWorker_WorkAreaArgs = {
+  filter: Worker_WorkAreaFilter;
 };
 
 
@@ -398,9 +483,15 @@ export type Query = {
   getWorker?: Maybe<Worker>;
   queryWorker?: Maybe<Array<Maybe<Worker>>>;
   aggregateWorker?: Maybe<WorkerAggregateResult>;
-  getWorkerField?: Maybe<WorkerField>;
-  queryWorkerField?: Maybe<Array<Maybe<WorkerField>>>;
-  aggregateWorkerField?: Maybe<WorkerFieldAggregateResult>;
+  getWorker_tlSection?: Maybe<Worker_TlSection>;
+  queryWorker_tlSection?: Maybe<Array<Maybe<Worker_TlSection>>>;
+  aggregateWorker_tlSection?: Maybe<Worker_TlSectionAggregateResult>;
+  getWorker_segment?: Maybe<Worker_Segment>;
+  queryWorker_segment?: Maybe<Array<Maybe<Worker_Segment>>>;
+  aggregateWorker_segment?: Maybe<Worker_SegmentAggregateResult>;
+  getWorker_workArea?: Maybe<Worker_WorkArea>;
+  queryWorker_workArea?: Maybe<Array<Maybe<Worker_WorkArea>>>;
+  aggregateWorker_workArea?: Maybe<Worker_WorkAreaAggregateResult>;
   getWorkProcess?: Maybe<WorkProcess>;
   queryWorkProcess?: Maybe<Array<Maybe<WorkProcess>>>;
   aggregateWorkProcess?: Maybe<WorkProcessAggregateResult>;
@@ -426,22 +517,57 @@ export type QueryAggregateWorkerArgs = {
 };
 
 
-export type QueryGetWorkerFieldArgs = {
-  id?: Maybe<Scalars['ID']>;
-  value?: Maybe<Scalars['String']>;
+export type QueryGetWorker_TlSectionArgs = {
+  value: Scalars['String'];
 };
 
 
-export type QueryQueryWorkerFieldArgs = {
-  filter?: Maybe<WorkerFieldFilter>;
-  order?: Maybe<WorkerFieldOrder>;
+export type QueryQueryWorker_TlSectionArgs = {
+  filter?: Maybe<Worker_TlSectionFilter>;
+  order?: Maybe<Worker_TlSectionOrder>;
   first?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
 };
 
 
-export type QueryAggregateWorkerFieldArgs = {
-  filter?: Maybe<WorkerFieldFilter>;
+export type QueryAggregateWorker_TlSectionArgs = {
+  filter?: Maybe<Worker_TlSectionFilter>;
+};
+
+
+export type QueryGetWorker_SegmentArgs = {
+  value: Scalars['String'];
+};
+
+
+export type QueryQueryWorker_SegmentArgs = {
+  filter?: Maybe<Worker_SegmentFilter>;
+  order?: Maybe<Worker_SegmentOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAggregateWorker_SegmentArgs = {
+  filter?: Maybe<Worker_SegmentFilter>;
+};
+
+
+export type QueryGetWorker_WorkAreaArgs = {
+  value: Scalars['String'];
+};
+
+
+export type QueryQueryWorker_WorkAreaArgs = {
+  filter?: Maybe<Worker_WorkAreaFilter>;
+  order?: Maybe<Worker_WorkAreaOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAggregateWorker_WorkAreaArgs = {
+  filter?: Maybe<Worker_WorkAreaFilter>;
 };
 
 
@@ -512,26 +638,6 @@ export type UpdateWorkProcessPayload = {
 export type UpdateWorkProcessPayloadWorkProcessArgs = {
   filter?: Maybe<WorkProcessFilter>;
   order?: Maybe<WorkProcessOrder>;
-  first?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-};
-
-export type UpdateWorkerFieldInput = {
-  filter: WorkerFieldFilter;
-  set?: Maybe<WorkerFieldPatch>;
-  remove?: Maybe<WorkerFieldPatch>;
-};
-
-export type UpdateWorkerFieldPayload = {
-  __typename?: 'UpdateWorkerFieldPayload';
-  workerField?: Maybe<Array<Maybe<WorkerField>>>;
-  numUids?: Maybe<Scalars['Int']>;
-};
-
-
-export type UpdateWorkerFieldPayloadWorkerFieldArgs = {
-  filter?: Maybe<WorkerFieldFilter>;
-  order?: Maybe<WorkerFieldOrder>;
   first?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
 };
@@ -626,25 +732,25 @@ export type Worker = {
   __typename?: 'Worker';
   id: Scalars['ID'];
   name: Scalars['String'];
-  tlSection: WorkerField;
-  segment: WorkerField;
-  workArea: WorkerField;
+  tlSection: Worker_TlSection;
+  segment: Worker_Segment;
+  workArea: Worker_WorkArea;
   process?: Maybe<WorkProcess>;
 };
 
 
 export type WorkerTlSectionArgs = {
-  filter?: Maybe<WorkerFieldFilter>;
+  filter?: Maybe<Worker_TlSectionFilter>;
 };
 
 
 export type WorkerSegmentArgs = {
-  filter?: Maybe<WorkerFieldFilter>;
+  filter?: Maybe<Worker_SegmentFilter>;
 };
 
 
 export type WorkerWorkAreaArgs = {
-  filter?: Maybe<WorkerFieldFilter>;
+  filter?: Maybe<Worker_WorkAreaFilter>;
 };
 
 
@@ -659,63 +765,9 @@ export type WorkerAggregateResult = {
   nameMax?: Maybe<Scalars['String']>;
 };
 
-export type WorkerField = {
-  __typename?: 'WorkerField';
-  id: Scalars['ID'];
-  value: Scalars['String'];
-  fieldType: WorkerFieldType;
-};
-
-export type WorkerFieldAggregateResult = {
-  __typename?: 'WorkerFieldAggregateResult';
-  count?: Maybe<Scalars['Int']>;
-  valueMin?: Maybe<Scalars['String']>;
-  valueMax?: Maybe<Scalars['String']>;
-};
-
-export type WorkerFieldFilter = {
-  id?: Maybe<Array<Scalars['ID']>>;
-  value?: Maybe<StringHashFilter>;
-  has?: Maybe<Array<Maybe<WorkerFieldHasFilter>>>;
-  and?: Maybe<Array<Maybe<WorkerFieldFilter>>>;
-  or?: Maybe<Array<Maybe<WorkerFieldFilter>>>;
-  not?: Maybe<WorkerFieldFilter>;
-};
-
-export enum WorkerFieldHasFilter {
-  Value = 'value',
-  FieldType = 'fieldType'
-}
-
-export type WorkerFieldOrder = {
-  asc?: Maybe<WorkerFieldOrderable>;
-  desc?: Maybe<WorkerFieldOrderable>;
-  then?: Maybe<WorkerFieldOrder>;
-};
-
-export enum WorkerFieldOrderable {
-  Value = 'value'
-}
-
-export type WorkerFieldPatch = {
-  fieldType?: Maybe<WorkerFieldType>;
-};
-
-export type WorkerFieldRef = {
-  id?: Maybe<Scalars['ID']>;
-  value?: Maybe<Scalars['String']>;
-  fieldType?: Maybe<WorkerFieldType>;
-};
-
-export enum WorkerFieldType {
-  TlSection = 'TL_SECTION',
-  Segment = 'SEGMENT',
-  WorkArea = 'WORK_AREA'
-}
-
 export type WorkerFilter = {
   id?: Maybe<Array<Scalars['ID']>>;
-  name?: Maybe<StringHashFilter>;
+  name?: Maybe<StringTermFilter>;
   has?: Maybe<Array<Maybe<WorkerHasFilter>>>;
   and?: Maybe<Array<Maybe<WorkerFilter>>>;
   or?: Maybe<Array<Maybe<WorkerFilter>>>;
@@ -741,19 +793,133 @@ export enum WorkerOrderable {
 }
 
 export type WorkerPatch = {
-  tlSection?: Maybe<WorkerFieldRef>;
-  segment?: Maybe<WorkerFieldRef>;
-  workArea?: Maybe<WorkerFieldRef>;
+  tlSection?: Maybe<Worker_TlSectionRef>;
+  segment?: Maybe<Worker_SegmentRef>;
+  workArea?: Maybe<Worker_WorkAreaRef>;
   process?: Maybe<WorkProcessRef>;
 };
 
 export type WorkerRef = {
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
-  tlSection?: Maybe<WorkerFieldRef>;
-  segment?: Maybe<WorkerFieldRef>;
-  workArea?: Maybe<WorkerFieldRef>;
+  tlSection?: Maybe<Worker_TlSectionRef>;
+  segment?: Maybe<Worker_SegmentRef>;
+  workArea?: Maybe<Worker_WorkAreaRef>;
   process?: Maybe<WorkProcessRef>;
+};
+
+export type Worker_Segment = {
+  __typename?: 'Worker_segment';
+  value: Scalars['String'];
+};
+
+export type Worker_SegmentAggregateResult = {
+  __typename?: 'Worker_segmentAggregateResult';
+  count?: Maybe<Scalars['Int']>;
+  valueMin?: Maybe<Scalars['String']>;
+  valueMax?: Maybe<Scalars['String']>;
+};
+
+export type Worker_SegmentFilter = {
+  value?: Maybe<StringHashFilter>;
+  has?: Maybe<Array<Maybe<Worker_SegmentHasFilter>>>;
+  and?: Maybe<Array<Maybe<Worker_SegmentFilter>>>;
+  or?: Maybe<Array<Maybe<Worker_SegmentFilter>>>;
+  not?: Maybe<Worker_SegmentFilter>;
+};
+
+export enum Worker_SegmentHasFilter {
+  Value = 'value'
+}
+
+export type Worker_SegmentOrder = {
+  asc?: Maybe<Worker_SegmentOrderable>;
+  desc?: Maybe<Worker_SegmentOrderable>;
+  then?: Maybe<Worker_SegmentOrder>;
+};
+
+export enum Worker_SegmentOrderable {
+  Value = 'value'
+}
+
+export type Worker_SegmentRef = {
+  value: Scalars['String'];
+};
+
+export type Worker_TlSection = {
+  __typename?: 'Worker_tlSection';
+  value: Scalars['String'];
+};
+
+export type Worker_TlSectionAggregateResult = {
+  __typename?: 'Worker_tlSectionAggregateResult';
+  count?: Maybe<Scalars['Int']>;
+  valueMin?: Maybe<Scalars['String']>;
+  valueMax?: Maybe<Scalars['String']>;
+};
+
+export type Worker_TlSectionFilter = {
+  value?: Maybe<StringHashFilter>;
+  has?: Maybe<Array<Maybe<Worker_TlSectionHasFilter>>>;
+  and?: Maybe<Array<Maybe<Worker_TlSectionFilter>>>;
+  or?: Maybe<Array<Maybe<Worker_TlSectionFilter>>>;
+  not?: Maybe<Worker_TlSectionFilter>;
+};
+
+export enum Worker_TlSectionHasFilter {
+  Value = 'value'
+}
+
+export type Worker_TlSectionOrder = {
+  asc?: Maybe<Worker_TlSectionOrderable>;
+  desc?: Maybe<Worker_TlSectionOrderable>;
+  then?: Maybe<Worker_TlSectionOrder>;
+};
+
+export enum Worker_TlSectionOrderable {
+  Value = 'value'
+}
+
+export type Worker_TlSectionRef = {
+  value: Scalars['String'];
+};
+
+export type Worker_WorkArea = {
+  __typename?: 'Worker_workArea';
+  value: Scalars['String'];
+};
+
+export type Worker_WorkAreaAggregateResult = {
+  __typename?: 'Worker_workAreaAggregateResult';
+  count?: Maybe<Scalars['Int']>;
+  valueMin?: Maybe<Scalars['String']>;
+  valueMax?: Maybe<Scalars['String']>;
+};
+
+export type Worker_WorkAreaFilter = {
+  value?: Maybe<StringHashFilter>;
+  has?: Maybe<Array<Maybe<Worker_WorkAreaHasFilter>>>;
+  and?: Maybe<Array<Maybe<Worker_WorkAreaFilter>>>;
+  or?: Maybe<Array<Maybe<Worker_WorkAreaFilter>>>;
+  not?: Maybe<Worker_WorkAreaFilter>;
+};
+
+export enum Worker_WorkAreaHasFilter {
+  Value = 'value'
+}
+
+export type Worker_WorkAreaOrder = {
+  asc?: Maybe<Worker_WorkAreaOrderable>;
+  desc?: Maybe<Worker_WorkAreaOrderable>;
+  then?: Maybe<Worker_WorkAreaOrder>;
+};
+
+export enum Worker_WorkAreaOrderable {
+  Value = 'value'
+}
+
+export type Worker_WorkAreaRef = {
+  value: Scalars['String'];
 };
 
 export type GetWorkerQueryVariables = Exact<{
@@ -767,14 +933,14 @@ export type GetWorkerQuery = (
     { __typename?: 'Worker' }
     & Pick<Worker, 'id' | 'name'>
     & { tlSection: (
-      { __typename?: 'WorkerField' }
-      & Pick<WorkerField, 'value'>
+      { __typename?: 'Worker_tlSection' }
+      & Pick<Worker_TlSection, 'value'>
     ), segment: (
-      { __typename?: 'WorkerField' }
-      & Pick<WorkerField, 'value'>
+      { __typename?: 'Worker_segment' }
+      & Pick<Worker_Segment, 'value'>
     ), workArea: (
-      { __typename?: 'WorkerField' }
-      & Pick<WorkerField, 'value'>
+      { __typename?: 'Worker_workArea' }
+      & Pick<Worker_WorkArea, 'value'>
     ) }
   )> }
 );
@@ -790,6 +956,23 @@ export type CheckWorkerNameAvailableQuery = (
     { __typename?: 'Worker' }
     & Pick<Worker, 'id'>
   )> }
+);
+
+export type GetWorkerFieldsAutocompleteQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetWorkerFieldsAutocompleteQuery = (
+  { __typename?: 'Query' }
+  & { queryWorker_tlSection?: Maybe<Array<Maybe<(
+    { __typename?: 'Worker_tlSection' }
+    & Pick<Worker_TlSection, 'value'>
+  )>>>, queryWorker_segment?: Maybe<Array<Maybe<(
+    { __typename?: 'Worker_segment' }
+    & Pick<Worker_Segment, 'value'>
+  )>>>, queryWorker_workArea?: Maybe<Array<Maybe<(
+    { __typename?: 'Worker_workArea' }
+    & Pick<Worker_WorkArea, 'value'>
+  )>>> }
 );
 
 export type AllWorkersQueryVariables = Exact<{ [key: string]: never; }>;
@@ -917,6 +1100,46 @@ export function useCheckWorkerNameAvailableLazyQuery(baseOptions?: Apollo.LazyQu
 export type CheckWorkerNameAvailableQueryHookResult = ReturnType<typeof useCheckWorkerNameAvailableQuery>;
 export type CheckWorkerNameAvailableLazyQueryHookResult = ReturnType<typeof useCheckWorkerNameAvailableLazyQuery>;
 export type CheckWorkerNameAvailableQueryResult = Apollo.QueryResult<CheckWorkerNameAvailableQuery, CheckWorkerNameAvailableQueryVariables>;
+export const GetWorkerFieldsAutocompleteDocument = gql`
+    query GetWorkerFieldsAutocomplete {
+  queryWorker_tlSection {
+    value
+  }
+  queryWorker_segment {
+    value
+  }
+  queryWorker_workArea {
+    value
+  }
+}
+    `;
+
+/**
+ * __useGetWorkerFieldsAutocompleteQuery__
+ *
+ * To run a query within a React component, call `useGetWorkerFieldsAutocompleteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWorkerFieldsAutocompleteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWorkerFieldsAutocompleteQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetWorkerFieldsAutocompleteQuery(baseOptions?: Apollo.QueryHookOptions<GetWorkerFieldsAutocompleteQuery, GetWorkerFieldsAutocompleteQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetWorkerFieldsAutocompleteQuery, GetWorkerFieldsAutocompleteQueryVariables>(GetWorkerFieldsAutocompleteDocument, options);
+      }
+export function useGetWorkerFieldsAutocompleteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWorkerFieldsAutocompleteQuery, GetWorkerFieldsAutocompleteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetWorkerFieldsAutocompleteQuery, GetWorkerFieldsAutocompleteQueryVariables>(GetWorkerFieldsAutocompleteDocument, options);
+        }
+export type GetWorkerFieldsAutocompleteQueryHookResult = ReturnType<typeof useGetWorkerFieldsAutocompleteQuery>;
+export type GetWorkerFieldsAutocompleteLazyQueryHookResult = ReturnType<typeof useGetWorkerFieldsAutocompleteLazyQuery>;
+export type GetWorkerFieldsAutocompleteQueryResult = Apollo.QueryResult<GetWorkerFieldsAutocompleteQuery, GetWorkerFieldsAutocompleteQueryVariables>;
 export const AllWorkersDocument = gql`
     query AllWorkers {
   queryWorker {

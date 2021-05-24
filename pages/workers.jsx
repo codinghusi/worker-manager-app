@@ -47,7 +47,8 @@ export default function WorkersPage() {
             <Dropdown
                 fluid
                 selection
-                search={true}
+                search
+                selectOnBlur={false}
                 options={data}
                 value={value}
                 placeholder="Mitarbeiter suchen"

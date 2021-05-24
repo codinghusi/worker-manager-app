@@ -42,10 +42,6 @@ export function FetchWorker({ workerId, children }) {
         }
     }));
 
-    useEffect(() => {
-        console.log("request data", request.data);
-    }, [request.data]);
-
     return (
         <FetchType request={request} field="getWorker" loadingLabel="Lade Mitarbeiter" errorLabel="Mitarbeiter konnte nicht gefunden werden!">
             {children}

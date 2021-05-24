@@ -16,6 +16,18 @@ query CheckWorkerNameAvailable($name: String!) {
     }
 }
 
+query GetWorkerFieldsAutocomplete {
+    queryWorker_tlSection {
+        value
+    }
+    queryWorker_segment {
+        value
+    }
+    queryWorker_workArea {
+        value
+    }
+}
+
 query AllWorkers {
     queryWorker {
         id

@@ -1,9 +1,10 @@
-import { Form, Button, Message } from 'semantic-ui-react';
-import { useUpdateWorkerMutation, useAddWorkerMutation, useCheckWorkerNameAvailableLazyQuery } from '../../api/generated/graphql';
+import { Form, Button } from 'semantic-ui-react';
+import { useUpdateWorkerMutation, useAddWorkerMutation } from '../../api/generated/graphql';
 import { FetchWorker, useWorkerNameAvailable } from '../../helper/fetching'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import FieldError from '../field-error';
+import { useGetWorkerFieldsAutocompleteQuery } from './../../api/generated/graphql';
+import { useCopyObject } from '../../helper/hooks';
 
 export function AddWorkerForm({ }) {
     const router = useRouter();
@@ -32,8 +33,7 @@ export function AddWorkerForm({ }) {
 }
 
 export function EditWorkerForm({ workerId }) {
-    const router = useRouter();
-    const [ updateWorker, { data, error, loading }] = useUpdateWorkerMutation();
+    const [ updateWorker, { error, loading }] = useUpdateWorkerMutation();
 
     const onSubmit = (data) => {
         delete data.name; // is readonly, cant be updated
@@ -41,12 +41,6 @@ export function EditWorkerForm({ workerId }) {
         updateWorker({ variables: { id: workerId, data } });
         return loading;
     }
-
-    useEffect(() => {
-        if (data?.updateWorker?.worker?.length) {
-            router.push(`/worker/view/${workerId}`);
-        }
-    }, [data]);
 
     useEffect(() => {
         if (error) {
@@ -62,35 +56,17 @@ export function EditWorkerForm({ workerId }) {
 }
 
 export function WorkerForm({ onSubmit, data }) {
-    const [ submitLoading, setSubmitLoading ] = useState(false);
     const [ checkName, { loading: isCheckingName, isNameAvailable } ] = useWorkerNameAvailable();
+    const [ submitLoading, setSubmitLoading ] = useState(false);
     const [ hasErrors, setHasErrors ] = useState(false);
 
+    // Errors and validation
     useEffect(() => {
         setHasErrors(!isNameAvailable);
     }, [isNameAvailable])
 
     const checkingErrors = isCheckingName;
-
-
-    const handleSubmit = (e) => {
-        // gathering up data
-        e.preventDefault();
-        const form = e.target;
-        const formData = new FormData(form);
-        const rawData = Object.fromEntries(formData.entries());
-        const data = {
-            name: rawData.name,
-            tlSection: { value: rawData.tlSection },
-            segment: { value: rawData.segment },
-            workArea: { value: rawData.workArea },
-        }
-
-        // sending data
-        const loading = onSubmit(data);
-        setSubmitLoading(loading);
-    };
-
+    
     const onChange = event => {
         // validation
         const validations = {
@@ -112,6 +88,103 @@ export function WorkerForm({ onSubmit, data }) {
         nameNotAvailable: { content: "Dieser Name ist bereits vergeben", pointing: "below" }
     };
 
+    // autocomplete
+    const { loading: autocompleteLoading, data: autocompleteData } = useGetWorkerFieldsAutocompleteQuery();
+    const [ autocomplete, setAutocomplete ] = useState({});
+    const [ options, setOptions ] = useState(autocomplete);
+    
+    useEffect(() => {
+        const mapValues = ({ value }) => ({ value: value, text: value });
+
+        if (autocompleteData) {
+            const values = {
+                tlSection: autocompleteData.queryWorker_tlSection.map(mapValues),
+                segment: autocompleteData.queryWorker_segment.map(mapValues),
+                workArea: autocompleteData.queryWorker_workArea.map(mapValues),
+            };
+            setAutocomplete(values);
+            setOptions(values);
+            console.log("options", values);
+        }
+    }, [autocompleteData]);
+
+    const Autocomplete = ({ name, placeholder, label, onChange }) => {
+        const handleOnChange = (event, { value }) => {
+            setFormData({
+                ...formData,
+                [name]: value
+            });
+        }
+
+        const handleOnBlur = (event) => {
+            // onChange?.(name, value);
+        }
+
+        const handleNewItem = (e, { value }) => {
+            const item = { text: value, value };
+            setOptions({
+                ...options,
+                [name]: [ item, ...autocomplete[name] ]
+            });
+        }
+
+        return (
+            <Form.Field name={name}>
+                <Form.Dropdown
+                    required
+                    fluid
+                    selection
+                    search
+                    // selectOnBlur={false}
+                    noResultsMessage={null}
+                    allowAdditions
+                    additionLabel="Neu: "
+                    {...{label, placeholder, name}}
+
+                    options={options[name] ?? []}
+                    loading={autocompleteLoading}
+
+                    value={formData[name]}
+                    onChange={handleOnChange}
+
+                    // searchQuery={value}
+                    // onSearchChange={handleSearchChange}
+                    onBlur={handleOnBlur}
+                    onAddItem={handleNewItem}
+                />
+            </Form.Field>
+        );
+    }
+
+    // ...
+    const [ formData, setFormData ] = useState(data);
+
+    const handleDataChange = (fieldName, value) => setFormData({
+        ...formData.current,
+        [fieldName]: value
+    });
+
+    const handleSubmit = (e) => {
+        // gathering up data
+        e.preventDefault();
+        data = { ...data, ...formData };
+        const apiData = {
+            name: data.name,
+            tlSection: { value: data.tlSection },
+            segment: { value: data.segment },
+            workArea: { value: data.workArea },
+        }
+
+        console.log(formData, apiData);
+        console.log(new FormData(e.target));
+
+        // sending data
+        const loading = onSubmit(apiData);
+        setSubmitLoading(loading);
+    };
+
+    
+
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Input
@@ -119,44 +192,36 @@ export function WorkerForm({ onSubmit, data }) {
                 label="Name"
                 placeholder="Name eingeben"
                 name="name"
-                defaultValue={data.name}
+                defaultValue={formData.name}
                 readOnly={!!data.id}
                 disabled={!!data.id}
                 
                 onBlur={onNameChange}
                 error={!isNameAvailable && errors.nameNotAvailable}
                 loading={isCheckingName}
+                onChange={e => handleDataChange("name", e.target.value)}
             />
 
-            <Form.Field required>
-                <label>Segment</label>
-                <input
-                    placeholder="Segment eingeben"
-                    name="segment"
-                    defaultValue={data.segment}
-                    onChange={onChange}
-                />
-            </Form.Field>
+            <Autocomplete
+                placeholder="Segment eingeben"
+                name="segment"
+                label="Segment"
+                defaultValue={formData.segment}
+                onChange={handleDataChange} />
 
-            <Form.Field required>
-                <label>TL - Bereich</label>
-                <input
-                    placeholder="Bereich eingeben"
-                    name="tlSection"
-                    defaultValue={data.tlSection}
-                    onChange={onChange}
-                />
-            </Form.Field>
+            <Autocomplete
+                placeholder="TL-Bereich eingeben"
+                name="tlSection"
+                label="TL - Bereich"
+                defaultValue={formData.tlSection}
+                onChange={handleDataChange} />
 
-            <Form.Field required>
-                <label>Arbeitsbereich</label>
-                <input
-                    placeholder="Arbeitsbereich eingeben"
-                    name="workArea"
-                    defaultValue={data.workArea}
-                    onChange={onChange}
-                />
-            </Form.Field>
+            <Autocomplete
+                placeholder="Arbeitsbereich eingeben"
+                name="workArea"
+                label="Arbeitsbereich"
+                defaultValue={formData.workArea}
+                onChange={handleDataChange} />
 
             <Button type="submit" loading={submitLoading || checkingErrors} primary disabled={hasErrors || checkingErrors}>
                 {data.id ? "Speichern" : "Erstellen"}
