@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Message } from 'semantic-ui-react';
-import { useGetWorkerQuery } from '../api/generated/graphql';
+import { useCheckWorkerNameAvailableLazyQuery, useGetWorkerQuery } from '../api/generated/graphql';
 import Loading from '../components/loading';
 import { useEffect } from 'react';
 
@@ -68,4 +68,22 @@ export function useMiddlewareRequest(request, predicate) {
 
 export function useMapRequest(request, fieldname, predicate) {
     return useMiddlewareRequest(request, data => data[fieldname].map(predicate));
+}
+
+export function useWorkerNameAvailable() {
+    const [run, request] = useCheckWorkerNameAvailableLazyQuery();
+    const [ isAvailable, setIsAvailable ] = useState(true);
+
+    useEffect(() => {
+        if (request.data?.getWorker) {
+            setIsAvailable(false);
+        } else {
+            setIsAvailable(true);
+        }
+    }, [request.data]);
+
+    return [ run, {
+        ...request,
+        isNameAvailable: isAvailable
+    }];
 }

@@ -10,6 +10,12 @@ query GetWorker($id: ID!) {
     }
 }
 
+query CheckWorkerNameAvailable($name: String!) {
+    getWorker(name: $name) {
+        id
+    }
+}
+
 query AllWorkers {
     queryWorker {
         id

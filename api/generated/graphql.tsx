@@ -779,6 +779,19 @@ export type GetWorkerQuery = (
   )> }
 );
 
+export type CheckWorkerNameAvailableQueryVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type CheckWorkerNameAvailableQuery = (
+  { __typename?: 'Query' }
+  & { getWorker?: Maybe<(
+    { __typename?: 'Worker' }
+    & Pick<Worker, 'id'>
+  )> }
+);
+
 export type AllWorkersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -869,6 +882,41 @@ export function useGetWorkerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetWorkerQueryHookResult = ReturnType<typeof useGetWorkerQuery>;
 export type GetWorkerLazyQueryHookResult = ReturnType<typeof useGetWorkerLazyQuery>;
 export type GetWorkerQueryResult = Apollo.QueryResult<GetWorkerQuery, GetWorkerQueryVariables>;
+export const CheckWorkerNameAvailableDocument = gql`
+    query CheckWorkerNameAvailable($name: String!) {
+  getWorker(name: $name) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useCheckWorkerNameAvailableQuery__
+ *
+ * To run a query within a React component, call `useCheckWorkerNameAvailableQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckWorkerNameAvailableQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckWorkerNameAvailableQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCheckWorkerNameAvailableQuery(baseOptions: Apollo.QueryHookOptions<CheckWorkerNameAvailableQuery, CheckWorkerNameAvailableQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckWorkerNameAvailableQuery, CheckWorkerNameAvailableQueryVariables>(CheckWorkerNameAvailableDocument, options);
+      }
+export function useCheckWorkerNameAvailableLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckWorkerNameAvailableQuery, CheckWorkerNameAvailableQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckWorkerNameAvailableQuery, CheckWorkerNameAvailableQueryVariables>(CheckWorkerNameAvailableDocument, options);
+        }
+export type CheckWorkerNameAvailableQueryHookResult = ReturnType<typeof useCheckWorkerNameAvailableQuery>;
+export type CheckWorkerNameAvailableLazyQueryHookResult = ReturnType<typeof useCheckWorkerNameAvailableLazyQuery>;
+export type CheckWorkerNameAvailableQueryResult = Apollo.QueryResult<CheckWorkerNameAvailableQuery, CheckWorkerNameAvailableQueryVariables>;
 export const AllWorkersDocument = gql`
     query AllWorkers {
   queryWorker {

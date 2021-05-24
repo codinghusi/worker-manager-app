@@ -1,8 +1,9 @@
-import { Form, Button } from 'semantic-ui-react';
-import { useUpdateWorkerMutation, useAddWorkerMutation, UpdateWorkerDocument } from '../../api/generated/graphql';
-import { FetchWorker } from '../../helper/fetching'
+import { Form, Button, Message } from 'semantic-ui-react';
+import { useUpdateWorkerMutation, useAddWorkerMutation, useCheckWorkerNameAvailableLazyQuery } from '../../api/generated/graphql';
+import { FetchWorker, useWorkerNameAvailable } from '../../helper/fetching'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import FieldError from '../field-error';
 
 export function AddWorkerForm({ }) {
     const router = useRouter();
@@ -62,6 +63,15 @@ export function EditWorkerForm({ workerId }) {
 
 export function WorkerForm({ onSubmit, data }) {
     const [ submitLoading, setSubmitLoading ] = useState(false);
+    const [ checkName, { loading: isCheckingName, isNameAvailable } ] = useWorkerNameAvailable();
+    const [ hasErrors, setHasErrors ] = useState(false);
+
+    useEffect(() => {
+        setHasErrors(!isNameAvailable);
+    }, [isNameAvailable])
+
+    const checkingErrors = isCheckingName;
+
 
     const handleSubmit = (e) => {
         // gathering up data
@@ -81,47 +91,74 @@ export function WorkerForm({ onSubmit, data }) {
         setSubmitLoading(loading);
     };
 
+    const onChange = event => {
+        // validation
+        const validations = {
+            name(e, value) {
+
+            }
+        }
+    }
+
+    const onNameChange = (e) => {
+        const value = e.target.value;
+        if (value.length < 3) {
+            return;
+        }
+        checkName({ variables: { name: value } });
+    }
+
+    const errors = {
+        nameNotAvailable: { content: "Dieser Name ist bereits vergeben", pointing: "below" }
+    };
+
     return (
         <Form onSubmit={handleSubmit}>
-            <Form.Field>
-                <label>Name des Mitarbeiters</label>
-                <input
-                    placeholder="Name eingeben"
-                    name="name"
-                    defaultValue={data.name}
-                    readOnly={!!data.id}
-                    disabled={!!data.id}
-                />
-            </Form.Field>
+            <Form.Input
+                required
+                label="Name"
+                placeholder="Name eingeben"
+                name="name"
+                defaultValue={data.name}
+                readOnly={!!data.id}
+                disabled={!!data.id}
+                
+                onBlur={onNameChange}
+                error={!isNameAvailable && errors.nameNotAvailable}
+                loading={isCheckingName}
+            />
 
-            <Form.Field>
+            <Form.Field required>
                 <label>Segment</label>
                 <input
                     placeholder="Segment eingeben"
                     name="segment"
                     defaultValue={data.segment}
+                    onChange={onChange}
                 />
             </Form.Field>
 
-            <Form.Field>
+            <Form.Field required>
                 <label>TL - Bereich</label>
                 <input
                     placeholder="Bereich eingeben"
                     name="tlSection"
                     defaultValue={data.tlSection}
+                    onChange={onChange}
                 />
             </Form.Field>
 
-            <Form.Field>
+            <Form.Field required>
                 <label>Arbeitsbereich</label>
                 <input
                     placeholder="Arbeitsbereich eingeben"
                     name="workArea"
                     defaultValue={data.workArea}
+                    onChange={onChange}
                 />
             </Form.Field>
 
-            <Button type="submit" loading={submitLoading} primary>
+            <Button type="submit" loading={submitLoading || checkingErrors} primary disabled={hasErrors || checkingErrors}>
                 {data.id ? "Speichern" : "Erstellen"}
             </Button>
             
