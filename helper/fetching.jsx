@@ -16,7 +16,7 @@ function FetchType({ request, field, loadingLabel, errorLabel, children }) {
             </Loading.Success>
 
             <Loading.Error>
-                {error => (
+                {error => console.error(error) || (
                     <Message variant="danger">
                         <Message.Header> Fehler </Message.Header>
                         <p>
@@ -32,14 +32,19 @@ function FetchType({ request, field, loadingLabel, errorLabel, children }) {
 
 export function FetchWorker({ workerId, children }) {
     const apiRequest = useGetWorkerQuery({ variables: { id: workerId } });
-    // const request = useMiddlewareRequest(apiRequest, data => ({
-    //     id: data.id,
-    //     name: data.name,
-    //     tlSection: data.tlSection.value,
-    //     segment: data.segment.value,
-    //     workArea: data.workArea.value
-    // }));
-    const request = apiRequest;
+    const request = useMiddlewareRequest(apiRequest, ({ getWorker: data }) => ({
+        getWorker: {
+            id: data.id,
+            name: data.name,
+            tlSection: data.tlSection.value,
+            segment: data.segment.value,
+            workArea: data.workArea.value
+        }
+    }));
+
+    useEffect(() => {
+        console.log("request data", request.data);
+    }, [request.data]);
 
     return (
         <FetchType request={request} field="getWorker" loadingLabel="Lade Mitarbeiter" errorLabel="Mitarbeiter konnte nicht gefunden werden!">

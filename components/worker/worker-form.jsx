@@ -69,15 +69,12 @@ export function WorkerForm({ onSubmit, data }) {
         const form = e.target;
         const formData = new FormData(form);
         const rawData = Object.fromEntries(formData.entries());
-        // const data = {
-        //     name: rawData.name,
-        //     tlSection: { value: rawData.tlSection },
-        //     segment: { value: rawData.segment },
-        //     workArea: { value: rawData.workArea },
-        // }
-        const data = rawData;
-
-        console.log("data:", data);
+        const data = {
+            name: rawData.name,
+            tlSection: { value: rawData.tlSection },
+            segment: { value: rawData.segment },
+            workArea: { value: rawData.workArea },
+        }
 
         // sending data
         const loading = onSubmit(data);

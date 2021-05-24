@@ -4,9 +4,9 @@ query GetWorker($id: ID!) {
     getWorker(id: $id) {
         id
         name
-        tlSection
-        segment
-        workArea
+        tlSection { value }
+        segment { value }
+        workArea { value }
     }
 }
 
@@ -32,3 +32,36 @@ mutation AddWorker($data: AddWorkerInput!) {
         }
     }
 }
+
+# {
+#     "data": {
+#         "name": "Test Sample",
+#         "tlSection": {
+#             "value": "Testbereich"
+#         },
+#         "segment": {
+#             "value": "Testsegment"
+#         },
+#         "workArea": {
+#             "value": "Testarbeitsbereich"
+#         }
+#     }
+# }
+
+# {
+#     "data": {
+#         "name": "Test Sample",
+#         "tlSection": {
+#             "value": "Testbereich",
+#             "fieldType": "TL_SECTION"
+#         },
+#         "segment": {
+#             "value": "Testsegment",
+#             "fieldType": "SEGMENT"
+#         },
+#         "workArea": {
+#             "value": "Testarbeitsbereich",
+#             "fieldType": "WORK_AREA"
+#         }
+#     }
+# }

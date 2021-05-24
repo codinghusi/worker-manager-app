@@ -1,6 +1,6 @@
 import Appbar from './layout/appbar';
 import Head from 'next/head';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Container } from 'semantic-ui-react';
 
 const currentPage = {
     name: "Dashboard"
