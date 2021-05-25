@@ -17,7 +17,19 @@ export default function AddWorkerForm({ }) {
 
     useEffect(() => {
         if (error) {
-            console.log("error while adding worker", error);
+            console.error("error while adding worker", error);
+            toast({
+                title: "Fehler beim Erstellen des Mitarbeiters",
+                description: (
+                    <div>
+                        <p>
+                            Der Mitarbeiter konnte nicht erstellt werden. <br />
+                            Versuche es später nochmal erneut.
+                        </p>
+                    </div>
+                ),
+                type: "error"
+            })
         }
     }, [error]);
 

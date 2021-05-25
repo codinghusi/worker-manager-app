@@ -9,8 +9,8 @@ import { SemanticToastContainer } from 'react-semantic-toasts'
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    // uri: "https://empty-moon.eu-west-1.aws.cloud.dgraph.io/graphql"
-    uri: "https://gerrit.lamann.eu/dgraph/graphql"
+    uri: "https://empty-moon.eu-west-1.aws.cloud.dgraph.io/graphql"
+    // uri: "https://gerrit.lamann.eu/dgraph/graphql"
   }),
   defaultOptions: {
     watchQuery: {

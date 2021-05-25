@@ -9,6 +9,15 @@ export default function useFormControl(defaultValues = {}) {
     });
 
     const useFieldControl = (name) => {
+        const handleChangeWithName = handleChange(name);
+        return {
+            name,
+            value: values[name],
+            onChange: (e, {value}) => handleChangeWithName(value)
+        }
+    }
+
+    const useAutocompleteControl = (name) => {
         return {
             name,
             value: values[name],
@@ -16,5 +25,5 @@ export default function useFormControl(defaultValues = {}) {
         }
     }
 
-    return [ values, useFieldControl ];
+    return { values, useFieldControl, useAutocompleteControl };
 }

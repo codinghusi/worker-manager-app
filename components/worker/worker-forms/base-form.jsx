@@ -34,7 +34,7 @@ export default function WorkerForm({ onSubmit, data }) {
     const { loading: autocompleteLoading, data: autocompleteData } = useGetWorkerFieldsAutocompleteQuery();
 
     // ...
-    const [ formData, useFieldControl ] = useFormControl(data);
+    const { values: formData, useFieldControl, useAutocompleteControl } = useFormControl(data);
 
     const handleSubmit = (e) => {
         // gathering up data
@@ -79,19 +79,19 @@ export default function WorkerForm({ onSubmit, data }) {
             <Autocomplete
                 placeholder="Segment eingeben"
                 label="Segment"
-                {...autocompleteProps("segment")}
+                {...useAutocompleteControl("segment")}
             />
 
             <Autocomplete
                 placeholder="TL-Bereich eingeben"
                 label="TL - Bereich"
-                {...autocompleteProps("tlSection")}
+                {...useAutocompleteControl("tlSection")}
             />
 
             <Autocomplete
                 placeholder="Arbeitsbereich eingeben"
                 label="Arbeitsbereich"
-                {...autocompleteProps("workArea")}
+                {...useAutocompleteControl("workArea")}
             />
 
             <Button type="submit" primary loading={submitLoading || checkingErrors} disabled={hasErrors || checkingErrors || submitLoading}>

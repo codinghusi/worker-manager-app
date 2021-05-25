@@ -13,7 +13,7 @@ export default function Autocomplete({ name, placeholder, label, onChange, optio
                 { value, text: value },
                 ...safeOptions
             ]);
-        } else {
+        } else if (!myOptions.length) {
             setMyOptions(safeOptions);
         }
     }
