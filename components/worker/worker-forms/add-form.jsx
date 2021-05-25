@@ -1,4 +1,4 @@
-import { useRouter } from 'react';
+import { useRouter } from 'next/router';
 import { useAddWorkerMutation } from "../../../api/generated/graphql";
 import WorkerForm from './base-form';
 
