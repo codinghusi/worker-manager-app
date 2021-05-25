@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { createContext, useState } from 'react';
 import { Message } from 'semantic-ui-react';
 import { useCheckWorkerNameAvailableLazyQuery, useGetWorkerQuery } from '../api/generated/graphql';
 import Loading from '../components/loading';
@@ -27,6 +27,31 @@ function FetchType({ request, field, loadingLabel, errorLabel, children }) {
             </Loading.Error>
         </Loading>
     );
+}
+
+export const WorkerContext = createContext(null);
+
+export function ProvideWorker({ workerId, children }) {
+    const apiRequest = useGetWorkerQuery({ variables: { id: workerId } });
+    const request = useMiddlewareRequest(apiRequest, ({ getWorker: data }) => ({
+        getWorker: {
+            id: data.id,
+            name: data.name,
+            tlSection: data.tlSection.value,
+            segment: data.segment.value,
+            workArea: data.workArea.value
+        }
+    }));
+
+    return (
+        <FetchType request={request} field="getWorker" loadingLabel="Lade Mitarbeiter" errorLabel="Mitarbeiter konnte nicht gefunden werden.">
+            {data => (
+                <WorkerContext.Provider value={{ data, refetch: request.refetch }}>
+                    {children}
+                </WorkerContext.Provider>
+            )}
+        </FetchType>
+    )
 }
 
 

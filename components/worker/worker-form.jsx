@@ -1,10 +1,9 @@
 import { Form, Button } from 'semantic-ui-react';
 import { useUpdateWorkerMutation, useAddWorkerMutation } from '../../api/generated/graphql';
-import { FetchWorker, useWorkerNameAvailable } from '../../helper/fetching'
-import { useEffect, useRef, useState } from 'react';
+import { WorkerContext, useWorkerNameAvailable } from '../../helper/fetching'
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useGetWorkerFieldsAutocompleteQuery } from './../../api/generated/graphql';
-import { useCopyObject } from '../../helper/hooks';
 
 export function AddWorkerForm({ }) {
     const router = useRouter();
@@ -32,13 +31,16 @@ export function AddWorkerForm({ }) {
     return <WorkerForm onSubmit={onSubmit} data={{}} />;
 }
 
-export function EditWorkerForm({ workerId }) {
+export function EditWorkerForm() {
     const [ updateWorker, { error, loading }] = useUpdateWorkerMutation();
+    const workerContext = useContext(WorkerContext);
 
     const onSubmit = (data) => {
         delete data.name; // is readonly, cant be updated
 
-        updateWorker({ variables: { id: workerId, data } });
+        updateWorker({ variables: { id: workerContext.data.id, data } });
+        workerContext.refetch();
+
         return loading;
     }
 
@@ -49,9 +51,7 @@ export function EditWorkerForm({ workerId }) {
     }, [error]);
 
     return (
-        <FetchWorker workerId={workerId}>
-            {worker => <WorkerForm onSubmit={onSubmit} data={worker} />}
-        </FetchWorker>
+        <WorkerForm onSubmit={onSubmit} data={workerContext.data} />
     );
 }
 

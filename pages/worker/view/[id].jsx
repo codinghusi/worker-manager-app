@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { FetchWorker } from './../../../helper/fetching';
+import { ProvideWorker, WorkerContext } from './../../../helper/fetching';
 import { EditWorkerForm } from '../../../components/worker/worker-form';
 import { Button, List, Header, Tab, Container, Segment, Icon } from 'semantic-ui-react';
 
@@ -8,7 +8,7 @@ import { Button, List, Header, Tab, Container, Segment, Icon } from 'semantic-ui
 function TabDetails({ data }) {
     return (
         <Segment>
-            <EditWorkerForm workerId={data.id} />
+            <EditWorkerForm />
         </Segment>
     );
 }
@@ -61,7 +61,7 @@ export default function ViewWorkerPage() {
     const router = useRouter();
     const { id } = router.query;
 
-    const Core = (data) => {
+    const Core = ({ data }) => {
         const panes = [
             {
                 menuItem: "Übersicht",
@@ -94,22 +94,22 @@ export default function ViewWorkerPage() {
                 </Head>
 
                 <Container>
-                    <br />                 
-                    <Tab
-                        menu={{ fluid: false, vertical: true,  }}
-                        menuPosition="left"
-                        panes={polishedPanes}
-                    />
+                    <br />   
+                        <Tab
+                            menu={{ fluid: false, vertical: true,  }}
+                            menuPosition="left"
+                            panes={polishedPanes}
+                        />
                 </Container>
             </>
         );
     }
-
     
-
     return (
-        <FetchWorker workerId={id}>
-            {Core}
-        </FetchWorker>
+        <ProvideWorker workerId={id}>
+            <WorkerContext.Consumer>
+                {Core}
+            </WorkerContext.Consumer>
+        </ProvideWorker>
     )
 }
