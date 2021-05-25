@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { AddWorkerForm } from '../../components/worker/worker-forms/base-form';
+import { AddWorkerForm } from '../../components/worker/worker-forms/';
 
 export default function AddWorkerPage() {
     return (
