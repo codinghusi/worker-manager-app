@@ -999,6 +999,16 @@ export type UpdateWorkerMutation = (
     & { worker?: Maybe<Array<Maybe<(
       { __typename?: 'Worker' }
       & Pick<Worker, 'id'>
+      & { tlSection: (
+        { __typename?: 'Worker_tlSection' }
+        & Pick<Worker_TlSection, 'value'>
+      ), segment: (
+        { __typename?: 'Worker_segment' }
+        & Pick<Worker_Segment, 'value'>
+      ), workArea: (
+        { __typename?: 'Worker_workArea' }
+        & Pick<Worker_WorkArea, 'value'>
+      ) }
     )>>> }
   )> }
 );
@@ -1180,6 +1190,15 @@ export const UpdateWorkerDocument = gql`
   updateWorker(input: {filter: {id: [$id]}, set: $data}) {
     worker {
       id
+      tlSection {
+        value
+      }
+      segment {
+        value
+      }
+      workArea {
+        value
+      }
     }
   }
 }

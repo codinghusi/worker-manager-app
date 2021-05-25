@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { ProvideWorker, WorkerContext } from './../../../helper/fetching';
 import { Header, Tab, Container, Segment } from 'semantic-ui-react';
-import { TabOverview, TabDetails, TabWorksteps } from './../../../components/pages/view-worker';
+import { TabOverview, TabDetails, TabWorksteps } from '../../../components/pages/view-worker';
 
 export default function ViewWorkerPage() {
     const router = useRouter();

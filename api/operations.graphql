@@ -38,7 +38,16 @@ query AllWorkers {
 mutation UpdateWorker($id: ID!, $data: WorkerPatch!) {
     updateWorker(input: { filter: { id: [$id] }, set: $data }) {
         worker {
-            id
+            id,
+            tlSection {
+                value
+            }
+            segment {
+                value
+            }
+            workArea {
+                value
+            }
         }
     }
 }

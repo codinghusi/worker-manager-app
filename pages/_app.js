@@ -1,8 +1,10 @@
 import '../styles/globals.css';
-import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css';
+import 'react-semantic-toasts/styles/react-semantic-alert.css';
 import '@fontsource/roboto';
 import Layout from '../components/layout';
 import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
+import { SemanticToastContainer } from 'react-semantic-toasts'
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -25,9 +27,10 @@ const client = new ApolloClient({
 function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+        <Layout>
+          <SemanticToastContainer />
+          <Component {...pageProps} />
+        </Layout>
     </ApolloProvider>
   );
 }
