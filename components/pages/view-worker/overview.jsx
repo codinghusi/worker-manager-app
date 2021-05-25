@@ -1,4 +1,4 @@
-import { Segment, List } from 'semantic-ui-react';
+import { Segment, List, Header } from 'semantic-ui-react';
 
 export default function TabOverview({ data }) {
     return (

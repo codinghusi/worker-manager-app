@@ -33,7 +33,7 @@ export const WorkerContext = createContext(null);
 
 export function ProvideWorker({ workerId, children }) {
     const apiRequest = useGetWorkerQuery({ variables: { id: workerId } });
-    const request = useMiddlewareRequest(apiRequest, ({ getWorker: data }) => ({
+    const request = useMiddlewareRequest(apiRequest, ({ getWorker: data }) => data && ({
         getWorker: {
             id: data.id,
             name: data.name,
@@ -57,7 +57,7 @@ export function ProvideWorker({ workerId, children }) {
 
 export function FetchWorker({ workerId, children }) {
     const apiRequest = useGetWorkerQuery({ variables: { id: workerId } });
-    const request = useMiddlewareRequest(apiRequest, ({ getWorker: data }) => ({
+    const request = useMiddlewareRequest(apiRequest, ({ getWorker: data }) => data && ({
         getWorker: {
             id: data.id,
             name: data.name,
