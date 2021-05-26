@@ -2,19 +2,23 @@ import { Form } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
 
 export default function Autocomplete({ name, placeholder, label, onChange, options, value, loading }) {
-    const [ myOptions, setMyOptions ] = useState(options ?? []);
+    const [ myOptions, setMyOptions ] = useState(null);
 
-    useEffect(() => updateOptions(value), [options])
+    useEffect(() => updateOptions(value), [options]);
 
     const updateOptions = (value) => {
         const safeOptions = options ?? [];
-        if (value && !safeOptions.find(option => option.value === value)) {
+        const values = safeOptions.map(option => option.value)
+
+        if (value && !values.includes(value)) {
             setMyOptions([
                 { value, text: value },
                 ...safeOptions
             ]);
-        } else if (!myOptions.length) {
-            setMyOptions(safeOptions);
+        } else {
+            setMyOptions([
+                ...safeOptions
+            ]);
         }
     }
 
@@ -31,17 +35,17 @@ export default function Autocomplete({ name, placeholder, label, onChange, optio
             fluid
             selection
             search
-            selectOnBlur={false}
             noResultsMessage={null}
             allowAdditions
             additionLabel="Neu: "
             {...{label, placeholder, name}}
 
-            options={myOptions}
+            options={myOptions ?? []}
             loading={loading}
 
             value={value}
             onChange={handleOnChange}
+            onSearchChange={handleOnChange}
 
             onAddItem={handleNewItem}
         />

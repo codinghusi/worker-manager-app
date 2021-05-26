@@ -54,7 +54,7 @@ export default function WorkerForm({ onSubmit, data }) {
     const autocompleteProps = (name) => {
         const options = useWrap(autocompleteData, () => autocompleteData?.[`queryWorker_${name}`].map(({ value }) => ({ value: value, text: value })));
         return {
-            ...useFieldControl(name),
+            ...useAutocompleteControl(name),
             options,
             loading: autocompleteLoading
         };
@@ -79,19 +79,19 @@ export default function WorkerForm({ onSubmit, data }) {
             <Autocomplete
                 placeholder="Segment eingeben"
                 label="Segment"
-                {...useAutocompleteControl("segment")}
+                {...autocompleteProps("segment")}
             />
 
             <Autocomplete
                 placeholder="TL-Bereich eingeben"
                 label="TL - Bereich"
-                {...useAutocompleteControl("tlSection")}
+                {...autocompleteProps("tlSection")}
             />
 
             <Autocomplete
                 placeholder="Arbeitsbereich eingeben"
                 label="Arbeitsbereich"
-                {...useAutocompleteControl("workArea")}
+                {...autocompleteProps("workArea")}
             />
 
             <Button type="submit" primary loading={submitLoading || checkingErrors} disabled={hasErrors || checkingErrors || submitLoading}>
