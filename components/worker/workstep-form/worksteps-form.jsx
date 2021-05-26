@@ -5,40 +5,12 @@ import { useEffect, useState } from 'react';
 
 // Maschinendauer, Arbeitsdauer, Wegdauer
 
-export default function WorkstepForm({}) {
-    console.log("render");
-    const dbSteps = [
-        {
-            id: "1",
-            name: 'Arbeitsschritt 1',
-            machineDuration: '2m',
-            workDuration: '5m',
-            walkDuration: '3m'
-        },
-        {
-            id: "2",
-            name: 'Arbeitsschritt 2',
-            machineDuration: '1m',
-            workDuration: '3m',
-            walkDuration: '5m'
-        },
-        {
-            id: "3",
-            name: 'Arbeitsschritt 3',
-            machineDuration: '5m',
-            workDuration: '8m',
-            walkDuration: '1m'
-        }
-    ];
-
-    const [ steps, setSteps ] = useState(dbSteps);
-    useEffect(() => console.log("steps changed", steps.map(step => step.id)), [steps]);
-
+export default function WorkstepsForm({ steps, onChange }) {
     const moveItem = (fromIndex, toIndex) => {
         const newSteps = steps.slice();
-        const [movedItem] = steps.splice(fromIndex, 1);
-        steps.splice(toIndex, 0, movedItem);
-        setSteps(newSteps);
+        const [movedItem] = newSteps.splice(fromIndex, 1);
+        newSteps.splice(toIndex, 0, movedItem);
+        onChange(newSteps);
     }
 
     const handleDragEnd = ({ source, destination}) => {
@@ -49,7 +21,6 @@ export default function WorkstepForm({}) {
             return;
         }
         moveItem(source.index, destination.index);
-        console.log("drag end", steps.map(step => step.name));
     };
 
     const Test = () => (
@@ -61,7 +32,7 @@ export default function WorkstepForm({}) {
                         ref={provided.innerRef}
                     >
                         <Segment>
-                            { steps.map((step, index) => (
+                            { steps?.map((step, index) => (
                                 <Draggable key={step.id} draggableId={step.id} index={index}>
                                     {(provided, snapshot) => (
                                         <div
@@ -70,6 +41,7 @@ export default function WorkstepForm({}) {
                                             {...provided.dragHandleProps}
                                         >
                                             <Workstep step={step} />
+                                            <br />
                                         </div>
                                     )}
                                 </Draggable>
@@ -80,7 +52,7 @@ export default function WorkstepForm({}) {
                 )}
             </Droppable>
         </DragDropContext>
-    )
+    );
 
     return <Test />;
 }
