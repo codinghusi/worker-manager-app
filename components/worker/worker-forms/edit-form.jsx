@@ -15,7 +15,6 @@ export default function EditWorkerForm() {
         
         setMutatedData(data);
         updateWorker({ variables: { id: workerContext.data.id, data } });
-        return loading;
     }
 
     useEffect(() => {
@@ -49,6 +48,6 @@ export default function EditWorkerForm() {
     }, [data]);
 
     return (
-        <WorkerForm onSubmit={onSubmit} data={workerContext.data} />
+        <WorkerForm onSubmit={onSubmit} data={workerContext.data} submitting={loading} />
     );
 }

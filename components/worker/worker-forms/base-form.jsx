@@ -6,9 +6,8 @@ import useFormControl from '../../../helper/form-control';
 import Autocomplete from '../../form/autocomplete';
 import { useWrap } from '../../../helper/hooks';
 
-export default function WorkerForm({ onSubmit, data }) {
+export default function WorkerForm({ onSubmit, data, submitting }) {
     const [ checkName, { loading: isCheckingName, isNameAvailable } ] = useWorkerNameAvailable();
-    const [ submitLoading, setSubmitLoading ] = useState(false);
     const [ hasErrors, setHasErrors ] = useState(false);
 
     // Errors and validation
@@ -47,8 +46,7 @@ export default function WorkerForm({ onSubmit, data }) {
         }
 
         // sending data
-        const loading = onSubmit(apiData);
-        setSubmitLoading(loading);
+        onSubmit(apiData);
     };
 
     const autocompleteProps = (name) => {
@@ -61,7 +59,7 @@ export default function WorkerForm({ onSubmit, data }) {
     }
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} loading={submitting || checkingErrors}>
             <Form.Input
                 required
                 label="Name"
@@ -94,7 +92,7 @@ export default function WorkerForm({ onSubmit, data }) {
                 {...autocompleteProps("workArea")}
             />
 
-            <Button type="submit" primary loading={submitLoading || checkingErrors} disabled={hasErrors || checkingErrors || submitLoading}>
+            <Button type="submit" primary loading={submitting || checkingErrors} disabled={hasErrors || checkingErrors || submitting}>
                 {data.id ? "Speichern" : "Erstellen"}
             </Button>
             
