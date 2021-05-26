@@ -2,7 +2,7 @@ import { Form, Button } from 'semantic-ui-react';
 import { useWorkerNameAvailable } from '../../../helper/fetching'
 import { useEffect, useState } from 'react';
 import { useGetWorkerFieldsAutocompleteQuery } from '../../../api/generated/graphql';
-import useFormControl from '../../form/form-control';
+import useFormControl from '../../../helper/form-control';
 import Autocomplete from '../../form/autocomplete';
 import { useWrap } from '../../../helper/hooks';
 

@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function useFormControl(defaultValues = {}) {
-    const [ values, setValues ] = useState(defaultValues);
+export default function useFormControl(vals = {}) {
+    const [ values, setValues ] = useState(vals);
+
+    useEffect(() => setValues(vals), [vals]);
 
     const handleChange = name => value => setValues({
         ...values,
