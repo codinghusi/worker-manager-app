@@ -28,7 +28,7 @@ export default function Loading({ request, field, children }) {
     return (
         <>
             {(request.loading || !request.data) && (
-                <Loader> {description} </Loader>
+                <Loader active> {description} </Loader>
             )}
 
             {!request.loading && !request.error && data && (
