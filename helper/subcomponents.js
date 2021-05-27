@@ -3,6 +3,11 @@ import { Children } from 'react';
 // code from https://medium.com/maxime-heckel/react-sub-components-513f6679abed
 
 export function findByType(children, component) {
+    // FIXME: inefficient
+    return findAllByType(children, component)[0];	
+};
+
+export function findAllByType(children, component) {
     const result = [];
     const type = [component.displayName ?? component.name];
 
@@ -14,5 +19,5 @@ export function findByType(children, component) {
         }
     });
 
-    return result[0];	
+    return result;	
 };

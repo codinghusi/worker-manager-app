@@ -4,7 +4,7 @@ import { useCheckWorkerNameAvailableLazyQuery, useGetWorkerQuery } from '../api/
 import Loading from '../components/loading';
 import { useEffect } from 'react';
 
-function FetchType({ request, field, loadingLabel, errorLabel, children }) {
+function FetchType({ request, field, loadingLabel, errorLabel, notFoundLabel, children }) {
     return (
         <Loading request={request} field={field}>
             <Loading.Description>
@@ -15,7 +15,18 @@ function FetchType({ request, field, loadingLabel, errorLabel, children }) {
                 {worker => children(worker)}
             </Loading.Success>
 
-            <Loading.Error>
+            <Loading.Error type="not-found">
+                {error => (
+                    <Message variant="danger">
+                        <Message.Header> Fehler </Message.Header>
+                        <p>
+                            {notFoundLabel}
+                        </p>
+                    </Message>
+                )}
+            </Loading.Error>
+
+            <Loading.Error type="default">
                 {error => console.error(error) || (
                     <Message variant="danger">
                         <Message.Header> Fehler </Message.Header>
@@ -44,7 +55,13 @@ export function ProvideWorker({ workerId, children }) {
     }));
 
     return (
-        <FetchType request={request} field="getWorker" loadingLabel="Lade Mitarbeiter" errorLabel="Mitarbeiter konnte nicht gefunden werden.">
+        <FetchType
+            request={request}
+            field="getWorker"
+            loadingLabel="Lade Mitarbeiter"
+            errorLabel="Es ist ein Fehler aufgetreten. Versuche es später erneut."
+            notFoundLabel="Mitarbeiter konnte nicht gefunden werden."
+        >
             {data => (
                 <WorkerContext.Provider value={{ data, refetch: request.refetch }}>
                     {children}
@@ -68,7 +85,12 @@ export function FetchWorker({ workerId, children }) {
     }));
 
     return (
-        <FetchType request={request} field="getWorker" loadingLabel="Lade Mitarbeiter" errorLabel="Mitarbeiter konnte nicht gefunden werden!">
+        <FetchType request={request}
+            field="getWorker"
+            loadingLabel="Lade Mitarbeiter"
+            errorLabel="Es ist ein Fehler aufgetreten. Versuche es später erneut."
+            notFoundLabel="Mitarbeiter konnte nicht gefunden werden."
+        >
             {children}
         </FetchType>
     );

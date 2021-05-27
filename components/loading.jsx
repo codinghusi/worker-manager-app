@@ -1,42 +1,61 @@
 import { Loader } from 'semantic-ui-react';
-import { findByType } from './../helper/subcomponents';
-import { useState, useEffect } from 'react';
+import { findByType, findAllByType } from './../helper/subcomponents';
+import { useWrap, useWraps } from '../helper/hooks';
 
 const Description = () => null;
 const Success = () => null;
 const Error = () => null;
 
+function toFunction(data) {
+    if (!data) {
+        return;
+    }
+    if (typeof(data) !== 'function') {
+        return () => data;
+    }
+    return data;
+}
+
 export default function Loading({ request, field, children }) {
     const description = findByType(children, Description)?.props.children;
     const success = findByType(children, Success)?.props.children;
-    const error = findByType(children, Error)?.props.children;
+    const errors = findAllByType(children, Error);
+    const errorMap = Object.fromEntries(errors.map(error => ([error.props.type ?? 'default', error.props.children])));
 
-    const [ data, setData ] = useState(request.data);
-
-    useEffect(() => {
-        if (request.data) {
+    const data = useWrap(request.data, data => {
+        if (data) {
             if (field) {
-                setData(request.data[field]);
-                return;
+                return data[field];
             }
-            setData(request.data);
-            return;
+            return data;
         }
-        setData(null);
-    }, [request.data]);
+        return null;
+    });
+
+    const error = useWraps([request.error, data], ([error, data]) => {
+        setTimeout(() => {
+            if (error) {
+                return errorMap.default;
+            }
+            if (!data) {
+                return errorMap['not-found'] ?? errorMap.default;
+            }
+            return null;
+        }, 2);
+    });
 
     return (
         <>
-            {(request.loading || !request.data) && (
+            {request.loading && (
                 <Loader active> {description} </Loader>
             )}
 
-            {!request.loading && !request.error && data && (
+            {!request.loading && !error && data && (
                 success(data)
             )}
 
-            {!request.loading && request.error &&  (
-                error(request.error)
+            {!request.loading && error && (
+                typeof(error) === 'function' ? error(request.error) : error
             )}
         </>
     )

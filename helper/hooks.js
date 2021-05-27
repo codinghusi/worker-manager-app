@@ -10,3 +10,9 @@ export function useWrap(state, updateCallback) {
     useEffect(() => setState(updateCallback(state)), [state]);
     return myState;
 }
+
+export function useWraps(states, updateCallback) {
+    const [ myState, setState ] = useState();
+    useEffect(() => setState(updateCallback(states)), states);
+    return myState;
+}
