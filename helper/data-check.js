@@ -1,5 +1,9 @@
 
 
+export function onlyThisFields(fields) {
+    return (data) => Object.fromEntries(Object.entries(data).filter(([key, value]) => fields.includes(key)));
+}
+
 export function objectHasItemsAs(obj1, obj2) {
     for (const key in obj1) {
         const item1 = obj1[key];

@@ -7,6 +7,13 @@ query GetWorker($id: ID!) {
         tlSection { value }
         segment { value }
         workArea { value }
+        worksteps {
+            id
+            name
+            machineDuration
+            workDuration
+            walkDuration
+        }
     }
 }
 
@@ -47,6 +54,27 @@ mutation UpdateWorker($id: ID!, $data: WorkerPatch!) {
             }
             workArea {
                 value
+            }
+        }
+    }
+}
+
+mutation UpdateWorksteps($id: ID!, $data: [WorkstepRef]!, $remove: [WorkstepRef!]!) {
+
+    clearWorksteps: updateWorker(input: { filter: { id: [$id] }, remove: { worksteps: $remove } }) {
+        worker {
+            worksteps {
+                id
+            }
+        }
+    }
+    updateWorker(input: { filter: { id: [$id] }, set: {
+        worksteps: $data
+    } }) {
+        worker{
+            worksteps {
+                id
+                name
             }
         }
     }

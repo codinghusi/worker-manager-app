@@ -23,7 +23,7 @@ export default function ViewWorkerPage() {
         }
     ]
 
-    const Core = (data) => (
+    const Core = ({ data }) => (
         <>
             <Head>
                 <title> Mitarbeiter {data.name} </title>

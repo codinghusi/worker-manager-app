@@ -4,6 +4,16 @@ import { useCheckWorkerNameAvailableLazyQuery, useGetWorkerQuery } from '../api/
 import Loading from '../components/loading';
 import { useEffect } from 'react';
 
+export function createStep(data) {
+    return {
+        name: '',
+        machineDuration: '',
+        workDuration: '',
+        walkDuration: '',
+        ...data
+    };
+}
+
 function FetchType({ request, field, loadingLabel, errorLabel, notFoundLabel, children }) {
     return (
         <Loading request={request} field={field}>
@@ -45,19 +55,15 @@ export const WorkerContext = createContext(null);
 export function ProvideWorker({ workerId, children }) {
     const apiRequest = useGetWorkerQuery({ variables: { id: workerId } });
     const request = useMiddlewareRequest(apiRequest, ({ getWorker: data }) => data && ({
-        getWorker: {
-            id: data.id,
-            name: data.name,
-            tlSection: data.tlSection.value,
-            segment: data.segment.value,
-            workArea: data.workArea.value
-        }
+        ...data,
+        tlSection: data.tlSection.value,
+        segment: data.segment.value,
+        workArea: data.workArea.value,
     }));
 
     return (
         <FetchType
             request={request}
-            field="getWorker"
             loadingLabel="Lade Mitarbeiter"
             errorLabel="Es ist ein Fehler aufgetreten. Versuche es später erneut."
             notFoundLabel="Mitarbeiter konnte nicht gefunden werden."

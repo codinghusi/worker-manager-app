@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Form } from 'semantic-ui-react';
+import { objectHasItemsAs } from '../../../helper/data-check';
 import useFormControl from '../../../helper/form-control';
 
 export default function WorkstepForm({ step, onChange }) {

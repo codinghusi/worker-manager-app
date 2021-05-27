@@ -38,31 +38,12 @@ export type Scalars = {
 
 
 
-export type AddWorkProcessInput = {
-  name?: Maybe<Scalars['String']>;
-  workers?: Maybe<Array<Maybe<WorkerRef>>>;
-};
-
-export type AddWorkProcessPayload = {
-  __typename?: 'AddWorkProcessPayload';
-  workProcess?: Maybe<Array<Maybe<WorkProcess>>>;
-  numUids?: Maybe<Scalars['Int']>;
-};
-
-
-export type AddWorkProcessPayloadWorkProcessArgs = {
-  filter?: Maybe<WorkProcessFilter>;
-  order?: Maybe<WorkProcessOrder>;
-  first?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-};
-
 export type AddWorkerInput = {
   name: Scalars['String'];
   tlSection: Worker_TlSectionRef;
   segment: Worker_SegmentRef;
   workArea: Worker_WorkAreaRef;
-  process?: Maybe<WorkProcessRef>;
+  worksteps?: Maybe<Array<Maybe<WorkstepRef>>>;
 };
 
 export type AddWorkerPayload = {
@@ -133,6 +114,27 @@ export type AddWorker_WorkAreaPayloadWorker_WorkAreaArgs = {
   offset?: Maybe<Scalars['Int']>;
 };
 
+export type AddWorkstepInput = {
+  name: Scalars['String'];
+  machineDuration: Scalars['String'];
+  workDuration: Scalars['String'];
+  walkDuration: Scalars['String'];
+};
+
+export type AddWorkstepPayload = {
+  __typename?: 'AddWorkstepPayload';
+  workstep?: Maybe<Array<Maybe<Workstep>>>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type AddWorkstepPayloadWorkstepArgs = {
+  filter?: Maybe<WorkstepFilter>;
+  order?: Maybe<WorkstepOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
 export type AuthRule = {
   and?: Maybe<Array<Maybe<AuthRule>>>;
   or?: Maybe<Array<Maybe<AuthRule>>>;
@@ -171,21 +173,6 @@ export type DateTimeFilter = {
 export type DateTimeRange = {
   min: Scalars['DateTime'];
   max: Scalars['DateTime'];
-};
-
-export type DeleteWorkProcessPayload = {
-  __typename?: 'DeleteWorkProcessPayload';
-  workProcess?: Maybe<Array<Maybe<WorkProcess>>>;
-  msg?: Maybe<Scalars['String']>;
-  numUids?: Maybe<Scalars['Int']>;
-};
-
-
-export type DeleteWorkProcessPayloadWorkProcessArgs = {
-  filter?: Maybe<WorkProcessFilter>;
-  order?: Maybe<WorkProcessOrder>;
-  first?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
 };
 
 export type DeleteWorkerPayload = {
@@ -244,6 +231,21 @@ export type DeleteWorker_WorkAreaPayload = {
 export type DeleteWorker_WorkAreaPayloadWorker_WorkAreaArgs = {
   filter?: Maybe<Worker_WorkAreaFilter>;
   order?: Maybe<Worker_WorkAreaOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+export type DeleteWorkstepPayload = {
+  __typename?: 'DeleteWorkstepPayload';
+  workstep?: Maybe<Array<Maybe<Workstep>>>;
+  msg?: Maybe<Scalars['String']>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type DeleteWorkstepPayloadWorkstepArgs = {
+  filter?: Maybe<WorkstepFilter>;
+  order?: Maybe<WorkstepOrder>;
   first?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
 };
@@ -363,9 +365,9 @@ export type Mutation = {
   deleteWorker_segment?: Maybe<DeleteWorker_SegmentPayload>;
   addWorker_workArea?: Maybe<AddWorker_WorkAreaPayload>;
   deleteWorker_workArea?: Maybe<DeleteWorker_WorkAreaPayload>;
-  addWorkProcess?: Maybe<AddWorkProcessPayload>;
-  updateWorkProcess?: Maybe<UpdateWorkProcessPayload>;
-  deleteWorkProcess?: Maybe<DeleteWorkProcessPayload>;
+  addWorkstep?: Maybe<AddWorkstepPayload>;
+  updateWorkstep?: Maybe<UpdateWorkstepPayload>;
+  deleteWorkstep?: Maybe<DeleteWorkstepPayload>;
 };
 
 
@@ -418,18 +420,18 @@ export type MutationDeleteWorker_WorkAreaArgs = {
 };
 
 
-export type MutationAddWorkProcessArgs = {
-  input: Array<AddWorkProcessInput>;
+export type MutationAddWorkstepArgs = {
+  input: Array<AddWorkstepInput>;
 };
 
 
-export type MutationUpdateWorkProcessArgs = {
-  input: UpdateWorkProcessInput;
+export type MutationUpdateWorkstepArgs = {
+  input: UpdateWorkstepInput;
 };
 
 
-export type MutationDeleteWorkProcessArgs = {
-  filter: WorkProcessFilter;
+export type MutationDeleteWorkstepArgs = {
+  filter: WorkstepFilter;
 };
 
 export type NearFilter = {
@@ -492,9 +494,9 @@ export type Query = {
   getWorker_workArea?: Maybe<Worker_WorkArea>;
   queryWorker_workArea?: Maybe<Array<Maybe<Worker_WorkArea>>>;
   aggregateWorker_workArea?: Maybe<Worker_WorkAreaAggregateResult>;
-  getWorkProcess?: Maybe<WorkProcess>;
-  queryWorkProcess?: Maybe<Array<Maybe<WorkProcess>>>;
-  aggregateWorkProcess?: Maybe<WorkProcessAggregateResult>;
+  getWorkstep?: Maybe<Workstep>;
+  queryWorkstep?: Maybe<Array<Maybe<Workstep>>>;
+  aggregateWorkstep?: Maybe<WorkstepAggregateResult>;
 };
 
 
@@ -571,21 +573,21 @@ export type QueryAggregateWorker_WorkAreaArgs = {
 };
 
 
-export type QueryGetWorkProcessArgs = {
+export type QueryGetWorkstepArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryQueryWorkProcessArgs = {
-  filter?: Maybe<WorkProcessFilter>;
-  order?: Maybe<WorkProcessOrder>;
+export type QueryQueryWorkstepArgs = {
+  filter?: Maybe<WorkstepFilter>;
+  order?: Maybe<WorkstepOrder>;
   first?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
 };
 
 
-export type QueryAggregateWorkProcessArgs = {
-  filter?: Maybe<WorkProcessFilter>;
+export type QueryAggregateWorkstepArgs = {
+  filter?: Maybe<WorkstepFilter>;
 };
 
 export type StringExactFilter = {
@@ -622,26 +624,6 @@ export type StringTermFilter = {
   anyofterms?: Maybe<Scalars['String']>;
 };
 
-export type UpdateWorkProcessInput = {
-  filter: WorkProcessFilter;
-  set?: Maybe<WorkProcessPatch>;
-  remove?: Maybe<WorkProcessPatch>;
-};
-
-export type UpdateWorkProcessPayload = {
-  __typename?: 'UpdateWorkProcessPayload';
-  workProcess?: Maybe<Array<Maybe<WorkProcess>>>;
-  numUids?: Maybe<Scalars['Int']>;
-};
-
-
-export type UpdateWorkProcessPayloadWorkProcessArgs = {
-  filter?: Maybe<WorkProcessFilter>;
-  order?: Maybe<WorkProcessOrder>;
-  first?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-};
-
 export type UpdateWorkerInput = {
   filter: WorkerFilter;
   set?: Maybe<WorkerPatch>;
@@ -662,70 +644,28 @@ export type UpdateWorkerPayloadWorkerArgs = {
   offset?: Maybe<Scalars['Int']>;
 };
 
-export type WithinFilter = {
-  polygon: PolygonRef;
+export type UpdateWorkstepInput = {
+  filter: WorkstepFilter;
+  set?: Maybe<WorkstepPatch>;
+  remove?: Maybe<WorkstepPatch>;
 };
 
-export type WorkProcess = {
-  __typename?: 'WorkProcess';
-  id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  workers?: Maybe<Array<Maybe<Worker>>>;
-  workersAggregate?: Maybe<WorkerAggregateResult>;
+export type UpdateWorkstepPayload = {
+  __typename?: 'UpdateWorkstepPayload';
+  workstep?: Maybe<Array<Maybe<Workstep>>>;
+  numUids?: Maybe<Scalars['Int']>;
 };
 
 
-export type WorkProcessWorkersArgs = {
-  filter?: Maybe<WorkerFilter>;
-  order?: Maybe<WorkerOrder>;
+export type UpdateWorkstepPayloadWorkstepArgs = {
+  filter?: Maybe<WorkstepFilter>;
+  order?: Maybe<WorkstepOrder>;
   first?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
 };
 
-
-export type WorkProcessWorkersAggregateArgs = {
-  filter?: Maybe<WorkerFilter>;
-};
-
-export type WorkProcessAggregateResult = {
-  __typename?: 'WorkProcessAggregateResult';
-  count?: Maybe<Scalars['Int']>;
-  nameMin?: Maybe<Scalars['String']>;
-  nameMax?: Maybe<Scalars['String']>;
-};
-
-export type WorkProcessFilter = {
-  id?: Maybe<Array<Scalars['ID']>>;
-  has?: Maybe<Array<Maybe<WorkProcessHasFilter>>>;
-  and?: Maybe<Array<Maybe<WorkProcessFilter>>>;
-  or?: Maybe<Array<Maybe<WorkProcessFilter>>>;
-  not?: Maybe<WorkProcessFilter>;
-};
-
-export enum WorkProcessHasFilter {
-  Name = 'name',
-  Workers = 'workers'
-}
-
-export type WorkProcessOrder = {
-  asc?: Maybe<WorkProcessOrderable>;
-  desc?: Maybe<WorkProcessOrderable>;
-  then?: Maybe<WorkProcessOrder>;
-};
-
-export enum WorkProcessOrderable {
-  Name = 'name'
-}
-
-export type WorkProcessPatch = {
-  name?: Maybe<Scalars['String']>;
-  workers?: Maybe<Array<Maybe<WorkerRef>>>;
-};
-
-export type WorkProcessRef = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  workers?: Maybe<Array<Maybe<WorkerRef>>>;
+export type WithinFilter = {
+  polygon: PolygonRef;
 };
 
 export type Worker = {
@@ -735,7 +675,8 @@ export type Worker = {
   tlSection: Worker_TlSection;
   segment: Worker_Segment;
   workArea: Worker_WorkArea;
-  process?: Maybe<WorkProcess>;
+  worksteps?: Maybe<Array<Maybe<Workstep>>>;
+  workstepsAggregate?: Maybe<WorkstepAggregateResult>;
 };
 
 
@@ -754,8 +695,16 @@ export type WorkerWorkAreaArgs = {
 };
 
 
-export type WorkerProcessArgs = {
-  filter?: Maybe<WorkProcessFilter>;
+export type WorkerWorkstepsArgs = {
+  filter?: Maybe<WorkstepFilter>;
+  order?: Maybe<WorkstepOrder>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type WorkerWorkstepsAggregateArgs = {
+  filter?: Maybe<WorkstepFilter>;
 };
 
 export type WorkerAggregateResult = {
@@ -779,7 +728,7 @@ export enum WorkerHasFilter {
   TlSection = 'tlSection',
   Segment = 'segment',
   WorkArea = 'workArea',
-  Process = 'process'
+  Worksteps = 'worksteps'
 }
 
 export type WorkerOrder = {
@@ -796,7 +745,7 @@ export type WorkerPatch = {
   tlSection?: Maybe<Worker_TlSectionRef>;
   segment?: Maybe<Worker_SegmentRef>;
   workArea?: Maybe<Worker_WorkAreaRef>;
-  process?: Maybe<WorkProcessRef>;
+  worksteps?: Maybe<Array<Maybe<WorkstepRef>>>;
 };
 
 export type WorkerRef = {
@@ -805,7 +754,7 @@ export type WorkerRef = {
   tlSection?: Maybe<Worker_TlSectionRef>;
   segment?: Maybe<Worker_SegmentRef>;
   workArea?: Maybe<Worker_WorkAreaRef>;
-  process?: Maybe<WorkProcessRef>;
+  worksteps?: Maybe<Array<Maybe<WorkstepRef>>>;
 };
 
 export type Worker_Segment = {
@@ -922,6 +871,71 @@ export type Worker_WorkAreaRef = {
   value: Scalars['String'];
 };
 
+export type Workstep = {
+  __typename?: 'Workstep';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  machineDuration: Scalars['String'];
+  workDuration: Scalars['String'];
+  walkDuration: Scalars['String'];
+};
+
+export type WorkstepAggregateResult = {
+  __typename?: 'WorkstepAggregateResult';
+  count?: Maybe<Scalars['Int']>;
+  nameMin?: Maybe<Scalars['String']>;
+  nameMax?: Maybe<Scalars['String']>;
+  machineDurationMin?: Maybe<Scalars['String']>;
+  machineDurationMax?: Maybe<Scalars['String']>;
+  workDurationMin?: Maybe<Scalars['String']>;
+  workDurationMax?: Maybe<Scalars['String']>;
+  walkDurationMin?: Maybe<Scalars['String']>;
+  walkDurationMax?: Maybe<Scalars['String']>;
+};
+
+export type WorkstepFilter = {
+  id?: Maybe<Array<Scalars['ID']>>;
+  has?: Maybe<Array<Maybe<WorkstepHasFilter>>>;
+  and?: Maybe<Array<Maybe<WorkstepFilter>>>;
+  or?: Maybe<Array<Maybe<WorkstepFilter>>>;
+  not?: Maybe<WorkstepFilter>;
+};
+
+export enum WorkstepHasFilter {
+  Name = 'name',
+  MachineDuration = 'machineDuration',
+  WorkDuration = 'workDuration',
+  WalkDuration = 'walkDuration'
+}
+
+export type WorkstepOrder = {
+  asc?: Maybe<WorkstepOrderable>;
+  desc?: Maybe<WorkstepOrderable>;
+  then?: Maybe<WorkstepOrder>;
+};
+
+export enum WorkstepOrderable {
+  Name = 'name',
+  MachineDuration = 'machineDuration',
+  WorkDuration = 'workDuration',
+  WalkDuration = 'walkDuration'
+}
+
+export type WorkstepPatch = {
+  name?: Maybe<Scalars['String']>;
+  machineDuration?: Maybe<Scalars['String']>;
+  workDuration?: Maybe<Scalars['String']>;
+  walkDuration?: Maybe<Scalars['String']>;
+};
+
+export type WorkstepRef = {
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  machineDuration?: Maybe<Scalars['String']>;
+  workDuration?: Maybe<Scalars['String']>;
+  walkDuration?: Maybe<Scalars['String']>;
+};
+
 export type GetWorkerQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -941,7 +955,10 @@ export type GetWorkerQuery = (
     ), workArea: (
       { __typename?: 'Worker_workArea' }
       & Pick<Worker_WorkArea, 'value'>
-    ) }
+    ), worksteps?: Maybe<Array<Maybe<(
+      { __typename?: 'Workstep' }
+      & Pick<Workstep, 'id' | 'name' | 'machineDuration' | 'workDuration' | 'walkDuration'>
+    )>>> }
   )> }
 );
 
@@ -1013,6 +1030,36 @@ export type UpdateWorkerMutation = (
   )> }
 );
 
+export type UpdateWorkstepsMutationVariables = Exact<{
+  id: Scalars['ID'];
+  data: Array<Maybe<WorkstepRef>> | Maybe<WorkstepRef>;
+  remove: Array<WorkstepRef> | WorkstepRef;
+}>;
+
+
+export type UpdateWorkstepsMutation = (
+  { __typename?: 'Mutation' }
+  & { clearWorksteps?: Maybe<(
+    { __typename?: 'UpdateWorkerPayload' }
+    & { worker?: Maybe<Array<Maybe<(
+      { __typename?: 'Worker' }
+      & { worksteps?: Maybe<Array<Maybe<(
+        { __typename?: 'Workstep' }
+        & Pick<Workstep, 'id'>
+      )>>> }
+    )>>> }
+  )>, updateWorker?: Maybe<(
+    { __typename?: 'UpdateWorkerPayload' }
+    & { worker?: Maybe<Array<Maybe<(
+      { __typename?: 'Worker' }
+      & { worksteps?: Maybe<Array<Maybe<(
+        { __typename?: 'Workstep' }
+        & Pick<Workstep, 'id' | 'name'>
+      )>>> }
+    )>>> }
+  )> }
+);
+
 export type AddWorkerMutationVariables = Exact<{
   data: AddWorkerInput;
 }>;
@@ -1043,6 +1090,13 @@ export const GetWorkerDocument = gql`
     }
     workArea {
       value
+    }
+    worksteps {
+      id
+      name
+      machineDuration
+      workDuration
+      walkDuration
     }
   }
 }
@@ -1230,6 +1284,55 @@ export function useUpdateWorkerMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateWorkerMutationHookResult = ReturnType<typeof useUpdateWorkerMutation>;
 export type UpdateWorkerMutationResult = Apollo.MutationResult<UpdateWorkerMutation>;
 export type UpdateWorkerMutationOptions = Apollo.BaseMutationOptions<UpdateWorkerMutation, UpdateWorkerMutationVariables>;
+export const UpdateWorkstepsDocument = gql`
+    mutation UpdateWorksteps($id: ID!, $data: [WorkstepRef]!, $remove: [WorkstepRef!]!) {
+  clearWorksteps: updateWorker(
+    input: {filter: {id: [$id]}, remove: {worksteps: $remove}}
+  ) {
+    worker {
+      worksteps {
+        id
+      }
+    }
+  }
+  updateWorker(input: {filter: {id: [$id]}, set: {worksteps: $data}}) {
+    worker {
+      worksteps {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export type UpdateWorkstepsMutationFn = Apollo.MutationFunction<UpdateWorkstepsMutation, UpdateWorkstepsMutationVariables>;
+
+/**
+ * __useUpdateWorkstepsMutation__
+ *
+ * To run a mutation, you first call `useUpdateWorkstepsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWorkstepsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateWorkstepsMutation, { data, loading, error }] = useUpdateWorkstepsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *      remove: // value for 'remove'
+ *   },
+ * });
+ */
+export function useUpdateWorkstepsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateWorkstepsMutation, UpdateWorkstepsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateWorkstepsMutation, UpdateWorkstepsMutationVariables>(UpdateWorkstepsDocument, options);
+      }
+export type UpdateWorkstepsMutationHookResult = ReturnType<typeof useUpdateWorkstepsMutation>;
+export type UpdateWorkstepsMutationResult = Apollo.MutationResult<UpdateWorkstepsMutation>;
+export type UpdateWorkstepsMutationOptions = Apollo.BaseMutationOptions<UpdateWorkstepsMutation, UpdateWorkstepsMutationVariables>;
 export const AddWorkerDocument = gql`
     mutation AddWorker($data: AddWorkerInput!) {
   addWorker(input: [$data]) {

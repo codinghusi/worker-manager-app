@@ -1,12 +1,16 @@
-import { Segment, Divider, Form } from "semantic-ui-react";
+import { Segment, Divider, Button } from "semantic-ui-react";
 import Workstep from './workstep';
 import WorkstepForm from './workstep-form';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useState } from 'react';
+import { createStep } from '../../../helper/fetching';
+
 
 // Maschinendauer, Arbeitsdauer, Wegdauer
 
-export default function WorkstepsForm({ steps, onChange }) {
+export default function WorkstepsForm({ steps, onChange, onSubmit, submitting }) {
+    const [ selectedStep, setSelectedStep ] = useState(steps?.[0]);
+
     const moveItem = (fromIndex, toIndex) => {
         const newSteps = steps.slice();
         const [movedItem] = newSteps.splice(fromIndex, 1);
@@ -26,7 +30,7 @@ export default function WorkstepsForm({ steps, onChange }) {
 
     const updateStep = (step) => {
         const newSteps = steps.slice();
-        const index = newSteps.findIndex(s => s.id === step.id);
+        const index = newSteps.findIndex(s => s.key === step.key);
 
         if (index === -1) {
             console.error("this is weird"); // never happened, but who knows
@@ -35,14 +39,45 @@ export default function WorkstepsForm({ steps, onChange }) {
 
         newSteps.splice(index, 1, step);
         onChange(newSteps);
-        // setSelectedStep(step);
+        // setSelectedStep(step); // does recursive dogshit, I want this line in, though
     }
 
-    const [ selectedStep, setSelectedStep ] = useState(steps?.[0]);
+    const handleSubmit = () => {
+        onSubmit(steps.map(step => ({ ...step, key: undefined })));
+    }
+
+    const handleAddStep = () => {
+        const randomKey = 'key-' + Date.now() + "-" + Math.round(Math.random() * 10);
+        // const newStep = { key: randomKey, name: '', machineDuration: '', workDuration: '', walkDuration: '' }
+        const newStep = createStep({ key: randomKey });
+        onChange([
+            ...steps,
+            newStep
+        ]);
+        setSelectedStep(newStep);
+    }
+
+    const handleDelete = () => {
+        const newSteps = steps.slice();
+        const index = newSteps.findIndex(s => s.key === selectedStep?.key);
+
+        if (index === -1) {
+            return;
+        }
+
+        newSteps.splice(index, 1);
+        onChange(newSteps);
+        setSelectedStep(newSteps[Math.min(newSteps.length - 1, index)]);
+    }
+
+
 
     return (
-        <Segment>
+        <Segment loading={submitting}>
             <WorkstepForm step={selectedStep} onChange={updateStep} />
+            <Button primary onClick={handleSubmit}>Speichern</Button>
+            <Button secondary onClick={handleAddStep}>Hinzufügen</Button>
+            <Button negative onClick={handleDelete}>Löschen</Button>
             <Divider />
             <br />
             <br />
@@ -54,7 +89,7 @@ export default function WorkstepsForm({ steps, onChange }) {
                             ref={provided.innerRef}
                         >
                             { steps?.map((step, index) => (
-                                    <Draggable key={step.id} draggableId={step.id} index={index}>
+                                    <Draggable key={step.key} draggableId={step.key} index={index}>
                                         {(provided, snapshot) => (
                                             <>
                                                 <div
@@ -62,7 +97,7 @@ export default function WorkstepsForm({ steps, onChange }) {
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
                                                 >
-                                                    <Workstep step={step} onClick={setSelectedStep} selected={step.id === selectedStep.id} />
+                                                    <Workstep step={step} onClick={setSelectedStep} selected={step.key === selectedStep.key} />
                                                     <br />
                                                 </div>
                                             </>
