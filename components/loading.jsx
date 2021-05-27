@@ -32,8 +32,8 @@ export default function Loading({ request, field, children }) {
         return null;
     });
 
-    const error = useWraps([request.error, data], ([error, data]) => {
-        setTimeout(() => {
+    const error = useWraps([request.error, data], async ([error, data]) => {
+        return Promise.resolve().then(() => {
             if (error) {
                 return errorMap.default;
             }
@@ -41,7 +41,7 @@ export default function Loading({ request, field, children }) {
                 return errorMap['not-found'] ?? errorMap.default;
             }
             return null;
-        }, 2);
+        });
     });
 
     return (
